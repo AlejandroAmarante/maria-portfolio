@@ -34,4 +34,14 @@ window.onload = function () {
         showcase.appendChild(cardElement);
       });
     });
+
+  // Make the navbar turn blue when you scroll down 50px
+  const navbar = document.getElementById("navbar");
+  window.onscroll = () => {
+    if (window.scrollY > 100) {
+      navbar.classList.add("glassmorphism");
+    } else {
+      navbar.classList.remove("glassmorphism");
+    }
+  };
 };
