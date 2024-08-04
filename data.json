@@ -1,121 +1,141 @@
 {
-  "cards": [
+  "selected-works": [
     {
-      "image": "https://picsum.photos/300/150",
-      "title": "Card 1",
-      "description": "Description for card 1",
+      "image": "https://picsum.photos/1000/1000",
+      "title": "Selected Work 1",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida, neque eu ultrices tristique, nunc mauris blandit quam, vel vulputate nisi leo ac nunc. Nulla facilisi. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet.",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
+      "title": "Selected Work 2",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida, neque eu ultrices tristique, nunc mauris blandit quam, vel vulputate nisi leo ac nunc. Nulla facilisi. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet.",
+      "link": "https://example.com"
+    },
+    {
+      "image": "https://picsum.photos/1000/1000",
+      "title": "Selected Work 3",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida, neque eu ultrices tristique, nunc mauris blandit quam, vel vulputate nisi leo ac nunc. Nulla facilisi. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet.",
+      "link": "https://example.com"
+    }
+  ],
+  "recent-works": [
+    {
+      "image": "https://picsum.photos/1000/1000",
+      "title": "Card 1",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida, neque eu ultrices tristique, nunc mauris blandit quam, vel vulputate nisi leo ac nunc. Nulla facilisi. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet.",
+      "link": "https://example.com"
+    },
+    {
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 2",
       "description": "Description for card 2",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 3",
       "description": "Description for card 3",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 4",
       "description": "Description for card 4",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 5",
       "description": "Description for card 5",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 6",
       "description": "Description for card 6",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 7",
       "description": "Description for card 7",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 8",
       "description": "Description for card 8",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 9",
       "description": "Description for card 9",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 10",
       "description": "Description for card 10",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 1",
       "description": "Description for card 1",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 2",
       "description": "Description for card 2",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 3",
       "description": "Description for card 3",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 4",
       "description": "Description for card 4",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 5",
       "description": "Description for card 5",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 6",
       "description": "Description for card 6",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 7",
       "description": "Description for card 7",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 8",
       "description": "Description for card 8",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 9",
       "description": "Description for card 9",
       "link": "https://example.com"
     },
     {
-      "image": "https://picsum.photos/300/150",
+      "image": "https://picsum.photos/1000/1000",
       "title": "Card 10",
       "description": "Description for card 10",
       "link": "https://example.com"
