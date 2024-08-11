@@ -3,6 +3,29 @@ window.onload = function () {
   loadingAnimation.innerHTML =
     '<object type="image/svg+xml" data="./imgs/ring-resize.svg"></object>'; // Show loading animation
 
+  // Function to hide loading animation
+  const hideLoadingAnimation = () => {
+    setTimeout(() => {
+      loadingAnimation.style.transition = "transform 1s ease-out";
+      loadingAnimation.style.transform = "translateY(-100vh)";
+    }, 1000).then(() => (loadingAnimation.style.display = "none"));
+  };
+
+  // Function to check if the background image of the 'about' section has loaded
+  const checkBackgroundImageLoaded = (callback) => {
+    const aboutSection = document.getElementById("about");
+    const bgImage = new Image();
+    const bgUrl = window
+      .getComputedStyle(aboutSection)
+      .backgroundImage.slice(5, -2);
+
+    console.log(bgUrl);
+
+    bgImage.onload = callback;
+    bgImage.src = bgUrl;
+  };
+
+  // Fetch data and update the page
   fetch("data.json")
     .then((response) => response.json())
     .then((data) => {
@@ -15,9 +38,7 @@ window.onload = function () {
 
         const imageElement = document.createElement("img");
         imageElement.src = work.image;
-        imageElement.onload = () => {
-          loadingAnimation.style.display = "none";
-        };
+
         cardElement.appendChild(imageElement);
 
         const content = document.createElement("div");
@@ -28,10 +49,23 @@ window.onload = function () {
         titleElement.textContent = work.title;
         content.appendChild(titleElement);
 
-        const descriptionElement = document.createElement("p");
-        descriptionElement.textContent = work.description;
-        content.appendChild(descriptionElement);
+        if (work.description) {
+          const descriptionElement = document.createElement("p");
+          descriptionElement.textContent = work.description;
+          content.appendChild(descriptionElement);
+        }
 
+        const tagContainer = document.createElement("div");
+        tagContainer.classList.add("tag-container");
+        if (work.tags) {
+          work.tags.forEach((tag) => {
+            const tagElement = document.createElement("div");
+            tagElement.classList.add("tag");
+            tagElement.textContent = tag;
+            tagContainer.appendChild(tagElement);
+          });
+        }
+        content.appendChild(tagContainer);
         selectedWorks.appendChild(cardElement);
       });
 
@@ -45,61 +79,45 @@ window.onload = function () {
 
         const imageElement = document.createElement("img");
         imageElement.src = work.image;
-        imageElement.onload = () => {
-          loadingAnimation.style.display = "none";
-        };
         cardElement.appendChild(imageElement);
 
         const content = document.createElement("div");
         content.classList.add("card-content");
         cardElement.appendChild(content);
 
-        const titleElement = document.createElement("h2");
-        titleElement.textContent = work.title;
-        content.appendChild(titleElement);
+        if (work.title) {
+          const titleElement = document.createElement("h2");
+          titleElement.textContent = work.title;
+          content.appendChild(titleElement);
+        }
 
-        const descriptionElement = document.createElement("p");
-        descriptionElement.textContent = work.description;
-        content.appendChild(descriptionElement);
+        if (work.description) {
+          const descriptionElement = document.createElement("p");
+          descriptionElement.textContent = work.description;
+          content.appendChild(descriptionElement);
+        }
 
-        recentWorks.appendChild(cardElement);
-      });
-    });
-  // Fetch data from JSON file
-  fetch("data.json")
-    .then((response) => response.json())
-    .then((data) => {
-      const recentWorks = document.getElementById("recent-works");
-      data.cards.forEach((card) => {
-        const cardElement = document.createElement("a");
-        cardElement.classList.add("card");
-        cardElement.href = card.link; // Set the href to the card's link
-        cardElement.target = "_blank";
-
-        const imageElement = document.createElement("img");
-        imageElement.src = card.image;
-        imageElement.onload = () => {
-          // Hide loading animation when image is fully loaded
-          loadingAnimation.style.display = "none";
-          cardElement.style.display = "block";
-        };
-        cardElement.appendChild(imageElement);
-
-        const content = document.createElement("div");
-        content.classList.add("card-content");
-        cardElement.appendChild(content);
-
-        const titleElement = document.createElement("h2");
-        titleElement.textContent = card.title;
-        content.appendChild(titleElement);
-
-        const descriptionElement = document.createElement("p");
-        descriptionElement.textContent = card.description;
-        content.appendChild(descriptionElement);
+        const tagContainer = document.createElement("div");
+        tagContainer.classList.add("tag-container");
+        if (work.tags) {
+          work.tags.forEach((tag) => {
+            const tagElement = document.createElement("div");
+            tagElement.classList.add("tag");
+            tagElement.textContent = tag;
+            tagContainer.appendChild(tagElement);
+          });
+        }
+        content.appendChild(tagContainer);
 
         recentWorks.appendChild(cardElement);
       });
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
+
+  // Check if the background image of the 'about' section has loaded, then hide the loading animation
+  checkBackgroundImageLoaded(hideLoadingAnimation);
 
   // Make the navbar turn blue when you scroll down 50px
   const navbar = document.getElementById("navbar");

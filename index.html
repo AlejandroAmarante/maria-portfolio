@@ -5,18 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maria's Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/main.css">
     <link rel="icon" href="imgs/favicon.ico">
 </head>
 
 <body>
     <div class="container">
+
         <nav id="navbar">
             <h1 id="name">Maria Amarante</h1>
             <ul id="nav-links">
                 <a href="#about">About Me</a>
-                <a href="#selected-works">Selected Works</a>
-                <a href="#recent-works">Recent Works</a>
+                <a href="#selected-works-container">Selected Works</a>
+                <a href="#recent-works-container">Recent Works</a>
                 <a href="./MariaAmaranteResume.pdf" target="_blank">Resume</a>
 
                 <a href="mailto:your-email@example.com" target="_blank">Contact</a>
@@ -43,7 +44,9 @@
             <div id="about-content">
                 <!-- <h3>About Me</h3> -->
                 <div id="about-info">
-                    <img src="./imgs/maria-amarante.jpg" alt="Maria Amarante">
+                    <div id="about-img">
+                        <img src="./imgs/maria-amarante.jpg" alt="Maria Amarante">
+                    </div>
                     <div id="about-text">
                         <h1>Storyteller, SEO Specialist, and Editing Aficionado</h1>
                         <p>
@@ -59,9 +62,14 @@
                 </div>
             </div>
         </section>
-        <section id="selected-works"></section>
-        <section id="recent-works">
-            <div id="loading-animation">Loading...</div>
+        <div id="loading-animation">Loading...</div>
+        <section id="selected-works-container">
+            <h1 class="section-title">Selected Works</h1>
+            <div id="selected-works"></div>
+        </section>
+        <section id="recent-works-container">
+            <h1 class="section-title">Recent Works</h1>
+            <div id="recent-works"></div>
         </section>
         <script src="script.js"></script>
     </div>
