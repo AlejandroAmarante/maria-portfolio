@@ -15,134 +15,104 @@
       "tags": ["Content-Writing", "SEO"]
     },
     {
-      "image": "https://picsum.photos/1000/1000",
-      "title": "Selected Work 3",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida, neque eu ultrices tristique, nunc mauris blandit quam, vel vulputate nisi leo ac nunc. Nulla facilisi. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet.",
-      "link": "https://example.com",
-      "tags": ["Content-Editing", "SEO"]
+      "image": "https://ideasforus.org/wp-content/uploads/2021/01/joshua-sukoff-5DDYHjk_KMU-unsplash-scaled.jpg",
+      "title": "Biden Rejoins Paris Climate Agreement",
+      "description": "As part of his plan for the first 100 days of his presidency, America’s new President Joe Biden has rejoined the Paris Climate Agreement. The Paris Climate Agreement is an international treaty with the goal to combat climate change. He signed the executive order as one of his first initiatives as president. This act is significant because the United States is the second leading country in carbon dioxide emissions. These emissions are the major cause of global warming.  Since the United States is one of the countries that has the largest negative impact on the environment, it has the most responsibility and potential for change. Every decision our government makes concerning the climate is important. According to the United States Environmental Protection Agency, “the largest source of greenhouse gas emissions from human activities in the United States is from burning fossil fuels for electricity, heat, and transportation”",
+      "link": "https://ideasforus.org/biden-rejoins-paris-climate-agreement/",
+      "tags": ["Content-Writing", "SEO"]
     }
   ],
   "recent-works": [
     {
-      "image": "https://picsum.photos/1000/1000",
-      "title": "Card 1",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida, neque eu ultrices tristique, nunc mauris blandit quam, vel vulputate nisi leo ac nunc. Nulla facilisi. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet. Sed eget nisi a lectus aliquam tempus. Nulla facilisi. Ut bibendum, nibh vel tincidunt aliquam, sem elit varius nunc, nec blandit nulla velit in turpis. Nam eget nibh velit. Nam finibus, tellus sit amet tincidunt auctor, sem elit rhoncus nunc, ut lacinia diam nunc vitae nunc. Nulla facilisi. Nullam auctor fermentum nibh, quis rutrum nunc tincidunt sit amet.",
-      "link": "https://example.com",
+      "image": "https://images.unsplash.com/photo-1517120026326-d87759a7b63b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "title": "Can You Get a Nursing Degree Fully Online?",
+      "description": "Whether you're a high school student planning to become a nurse or a working professional looking to advance your nursing career, you have probably heard of the various nursing degrees available. Now you're wondering: can you complete the required nursing classes online? ",
+      "link": "https://learn.org/articles/can_you_get_a_nursing_degree_fully_online.html",
       "tags": ["Content-Editing", "SEO"]
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 2",
-      "description": "Description for card 2",
-      "link": "https://example.com"
+      "title": "Is a Psychology Degree Right for Me?",
+      "description": "Those of you seeking a degree in psychology will want to know if the degree is right for you. Thankfully, the area of psychology is vast, allowing you to learn about numerous psychology programs needed for your degree. When choosing a psychology degree, examine the various psychology careers available. ",
+      "link": "https://learn.org/articles/psychology_degree_right_for_me.html"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 3",
-      "description": "Description for card 3",
-      "link": "https://example.com"
+      "title": "Is Purdue Global LGBTQ-Friendly?",
+      "description": "Uncover a supportive educational environment at Purdue Global--discover how it fosters an LGBTQ-friendly atmosphere. Apply confidently with inclusive insights.",
+      "link": "https://learn.org/articles/purdue_global_lgbtq_friendly.html"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 4",
-      "description": "Description for card 4",
-      "link": "https://example.com"
+      "title": "Best Free Associate Degrees Online | Learn.org",
+      "description": "It's possible to get a free or no-cost online associate degree. Schools offering these programs include Miami Dade College and Houston Community College.",
+      "link": "https://learn.org/articles/free_associate_degree_online.html"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 5",
-      "description": "Description for card 5",
-      "link": "https://example.com"
+      "title": "What Can You Do With a Social Work Degree Besides Social Work?",
+      "description": "You can pursue various career paths with a bachelor's or master's degree in social work. Options include health educator, policy analyst, and guidance counselor.",
+      "link": "https://learn.org/articles/social_work_degree_career_options.html"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 6",
-      "description": "Description for card 6",
-      "link": "https://example.com"
+      "title": "Which Military Branch Has the Best College Benefits?",
+      "description": "All military branches offer education benefits, but some will be better than others based on individual needs like desired degree programs and planned length of service.",
+      "link": "https://learn.org/articles/which_military_branch_has_best_college_benefits.html"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 7",
-      "description": "Description for card 7",
-      "link": "https://example.com"
+      "title": "8 Best Mother-Daughter Experiences In London",
+      "description": "London teems with historic and cultural activities. My daughter has loved Shakespeare and all of the English histories that he writes about. She also loves contemporary culture, including musicals, books, movies, and fashion. She chose London for her high school graduation trip due to this combination of history and modern life. The city offered us many opportunities for wonderful shared experiences.",
+      "link": "https://www.travelawaits.com/2796747/best-mother-daughter-experiences-in-london/"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 8",
-      "description": "Description for card 8",
-      "link": "https://example.com"
+      "title": "11 Adorable Small Towns To Visit On Nova Scotia’s Southern Coast",
+      "description": "For curious travelers eager to get off the proverbial beaten path, Nova Scotia’s southern coast will check all your travel boxes. There are amazing restaurants with delectable seafood, historic inns with gorgeous perennial gardens, delightful little lighthouses, and stunning beaches perfect for swimming and walking. All located just a few short hours from Halifax, these adorable small towns are a memorable addition to any East Coast road trip. I had the opportunity to visit them during a recent press trip and I can’t wait to return and explore some more!",
+      "link": "https://www.travelawaits.com/2796920/best-small-towns-to-visit-nova-scotia-southern-coast/"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 9",
-      "description": "Description for card 9",
-      "link": "https://example.com"
+      "title": "The 7 Best National Parks In California To Visit In The Fall",
+      "description": "California is home to nine national parks and an additional 19 monuments, all showcasing a wide array of landscapes from the beach to desert and mountains to forests. Within this collection are some of the oldest and newest parks in the country. ",
+      "link": "https://www.travelawaits.com/2796994/best-national-parks-in-california-to-visit-in-the-fall/"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 10",
-      "description": "Description for card 10",
-      "link": "https://example.com"
+      "title": "Is Grove Sustainable?",
+      "description": "Grove Collaborative is a company that ships natural home care essentials straight to your house every month. Their monthly boxes contain all kinds of products such as deodorants, toothpaste, laundry detergent, floor cleaners, and more. Some of the companies that they work with are Method, Mrs. Meyer’s, and Davids. Grove Collaborative also makes their own products. They claim that their collection is sustainable, powerful, and healthy. However, there is one problem. Many of the products they ship use plastic packaging.",
+      "link": "https://ideasforus.org/is-grove-sustainable/"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 1",
-      "description": "Description for card 1",
-      "link": "https://example.com"
+      "title": "Nestle to Deplete Ginnie Springs",
+      "description": "Nestle to Deplete Ginnie Springs. Recently, a corporation called Seven Springs Water Co. attempted to renew their water permit allowing them to drain the water from Ginnie Springs to sell to Nestle Waters North America or NWNA.  However, this time they wanted to increase the amount of water they drained. The Suwannee River Water Management District stated that the Seven Springs Water Co. did not meet the requirements for the permit and that the amount of water they wanted was a significant increase that the governing board should reject (7). The Suwannee River staff reportedly stated, “the company had not provided them with enough information to show that the increased pumping was in the public interest and that their water plant could handle the boost,” (7).",
+      "link": "https://ideasforus.org/nestle-to-deplete-ginnie-springs/"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 2",
-      "description": "Description for card 2",
-      "link": "https://example.com"
+      "title": "My Disney Experience App-Walt Disney World",
+      "description": "This blog post has been greatly requested. It seems that many people still don’t know about this app or don’t take advantage of all it’s features because I still see surprised looks on people’s faces whenever they see me pull out my phone to place a mobile order. Recently, I traveled to the Animal Kingdom park to show some of the various ways the My Disney Experience app can be used to optimize your trip. Since the app can track your location, it instantly knew that I was in the park. Shortly after I entered the Animal Kingdom, I received the message shown in the image above. I appreciated the warm welcome. Hopefully, this blog post will spread more awareness about this app and it’s many helpful features so guests can make the most out of their visit to Walt Disney World.",
+      "link": "https://delcarmzdotcom.wordpress.com/2019/08/08/my-disney-experience-app-walt-disney-world%e2%9c%a8/"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 3",
-      "description": "Description for card 3",
-      "link": "https://example.com"
+      "title": "Volunteering at Second Harvest Food Bank of Central Florida!",
+      "description": "Hello reader! You may be thinking, “isn’t this a Disney blog? Why are you writing about volunteering at a food bank?” Well, I’ve been thinking about branching out on what I write about. Orlando is a vast landscape full of different experiences that I would love to explore on my blog.",
+      "link": "https://delcarmzdotcom.wordpress.com/2019/08/02/volunteering-at-second-harvest-food-bank-of-central-florida/"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 4",
-      "description": "Description for card 4",
-      "link": "https://example.com"
+      "title": "Spending July 4th at Magic Kingdom",
+      "description": "It’s been a while! I’m glad to be back and write about some of my recent experiences at Walt Disney World. Today, we’re focusing on the Independence Day celebration at the Magic Kingdom. If you want to fast-forward to my review of the overall experience, scroll to the bottom of the post. The review will be in a light pink box.",
+      "link": "https://delcarmzdotcom.wordpress.com/2019/07/26/spending-july-4th-at-magic-kingdom/"
     },
     {
       "image": "https://picsum.photos/1000/1000",
-      "title": "Card 5",
-      "description": "Description for card 5",
-      "link": "https://example.com"
-    },
-    {
-      "image": "https://picsum.photos/1000/1000",
-      "title": "Card 6",
-      "description": "Description for card 6",
-      "link": "https://example.com"
-    },
-    {
-      "image": "https://picsum.photos/1000/1000",
-      "title": "Card 7",
-      "description": "Description for card 7",
-      "link": "https://example.com"
-    },
-    {
-      "image": "https://picsum.photos/1000/1000",
-      "title": "Card 8",
-      "description": "Description for card 8",
-      "link": "https://example.com"
-    },
-    {
-      "image": "https://picsum.photos/1000/1000",
-      "title": "Card 9",
-      "description": "Description for card 9",
-      "link": "https://example.com"
-    },
-    {
-      "image": "https://picsum.photos/1000/1000",
-      "title": "Card 10",
-      "description": "Description for card 10",
-      "link": "https://example.com"
+      "title": "Play Disney Parks app + Star War’s Galaxy’s Edge update!",
+      "description": "Looking to kill time during long ride wait times or just trying to make the most out of your Disney visit? Look no further! The Play Disney Parks app will make your trip even more exciting by challenging you, your family, and friends to visit different parts of the park and achieve objectives by playing games or simply checking in through the Bluetooth function. Before I start this post, I wanted to say that this app is not new. It’s been out since late 2018 but I’m making this post because many people I’ve spoken to had no idea this app existed! What is new, is that the Star Wars Galaxy’s Edge area has been added to the app. If you want to know more, keep scrolling!",
+      "link": "https://delcarmzdotcom.wordpress.com/2019/06/11/things-you-may-not-have-known-you-could-do-at-disney-part-1-play-disney-parks-app-star-wars-galaxys-edge-update/"
     }
   ]
 }
