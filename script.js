@@ -8,17 +8,15 @@ window.onload = function () {
   const selectedWorks = document.getElementById("selected-works");
   const recentWorks = document.getElementById("recent-works");
 
-  // Show loading animation
-  loadingAnimation.innerHTML =
-    '<object type="image/svg+xml" data="./imgs/ring-resize.svg"></object>';
-
   // Hide loading animation
   const hideLoadingAnimation = () => {
-    loadingAnimation.style.transition = "transform 1s ease-out";
-    loadingAnimation.style.transform = "translateY(-100vh)";
-    loadingAnimation.addEventListener("transitionend", () => {
-      loadingAnimation.style.display = "none";
-    });
+    setTimeout(() => {
+      loadingAnimation.style.transition = "transform 1s ease-out";
+      loadingAnimation.style.transform = "translateY(-100vh)";
+      loadingAnimation.addEventListener("transitionend", () => {
+        loadingAnimation.style.display = "none";
+      });
+    }, 1000);
   };
 
   // Check if background image has loaded
@@ -49,10 +47,10 @@ window.onload = function () {
   });
 
   // Fetch data and update the page
-  const createCardElement = (work, isSelectedWork) => {
+  const createCardElement = (work, flexColumn) => {
     const cardElement = document.createElement("a");
     cardElement.classList.add("card");
-    if (isSelectedWork) {
+    if (flexColumn) {
       cardElement.classList.add("column");
     }
     cardElement.href = work.link;
