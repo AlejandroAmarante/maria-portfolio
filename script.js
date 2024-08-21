@@ -138,6 +138,17 @@ window.onload = function () {
     });
   });
 
+  window.addEventListener("resize", () => {
+    Array.from(selectedWorks.children).forEach((child) => {
+      if (window.innerWidth < 800) {
+        child.classList.remove("column");
+        selectedWorks.style.flexDirection = "column";
+      } else {
+        child.classList.add("column");
+      }
+    });
+  });
+
   // Check if the background image of the 'about' section has loaded, then hide the loading animation
   checkBackgroundImageLoaded(hideLoadingAnimation);
 };
