@@ -42,7 +42,7 @@ window.onload = function () {
       closeIcon.style.display = "block";
     }
     navbar.style.backgroundColor = navLinks.classList.contains("show")
-      ? "#9abed8"
+      ? "#7caed3"
       : "transparent";
   };
 

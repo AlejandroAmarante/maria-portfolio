@@ -362,6 +362,7 @@ body {
   -webkit-line-clamp: 6;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
   font-size: 1rem;
 }
 
