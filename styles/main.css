@@ -476,7 +476,7 @@ body {
   }
 
   #selected-works > .card:nth-child(2n) {
-    flex-direction: row;
+    flex-direction: column;
   }
 
   #recent-works {
