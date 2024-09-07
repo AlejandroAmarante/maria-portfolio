@@ -3,6 +3,8 @@ window.onload = function () {
   const loadingAnimation = document.getElementById("loading-animation");
   const aboutSection = document.getElementById("about");
   const hamburgerMenu = document.getElementById("hamburger-menu");
+  const hamburgerIcon = document.getElementById("hamburger-icon");
+  const closeIcon = document.getElementById("close-icon");
   const navLinks = document.getElementById("nav-links");
   const navbar = document.getElementById("navbar");
   const selectedWorks = document.getElementById("selected-works");
@@ -32,6 +34,13 @@ window.onload = function () {
   // Toggle navLinks visibility and navbar background color
   const toggleNavLinks = () => {
     navLinks.classList.toggle("show");
+    if (hamburgerIcon.style.display === "none") {
+      hamburgerIcon.style.display = "block";
+      closeIcon.style.display = "none";
+    } else {
+      hamburgerIcon.style.display = "none";
+      closeIcon.style.display = "block";
+    }
     navbar.style.backgroundColor = navLinks.classList.contains("show")
       ? "#9abed8"
       : "transparent";

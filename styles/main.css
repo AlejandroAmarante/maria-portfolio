@@ -176,7 +176,7 @@ body {
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
-  padding: 1rem 0rem;
+  padding: 1rem;
 }
 
 #about p {
@@ -420,6 +420,16 @@ body {
 @media screen and (max-width: 800px) {
   #hamburger-menu {
     display: block;
+  }
+
+  #hamburger-icon {
+    display: block;
+    font-size: 3rem;
+  }
+
+  #close-icon {
+    display: none;
+    font-size: 4rem;
   }
 
   #nav-links {
