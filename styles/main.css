@@ -70,7 +70,7 @@ body {
   display: none;
   cursor: pointer;
   color: white;
-  font-size: 30px;
+  font-size: 3rem;
 }
 
 #nav-links {
@@ -419,17 +419,19 @@ body {
 
 @media screen and (max-width: 800px) {
   #hamburger-menu {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   #hamburger-icon {
     display: block;
-    font-size: 3rem;
   }
 
   #close-icon {
     display: none;
-    font-size: 4rem;
   }
 
   #nav-links {
