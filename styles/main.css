@@ -155,10 +155,11 @@ body {
   text-align: center;
   background-image: url("../imgs/background.webp");
   height: 70vh;
-  background-size: cover;
-  background-position: top;
+  background-size: 100%;
+  background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  -webkit-background-size: cover;
   align-items: center;
 }
 
