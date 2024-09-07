@@ -138,11 +138,16 @@ window.onload = function () {
     });
   });
 
+  if (window.innerWidth <= 800) {
+    Array.from(selectedWorks.children).forEach((child) => {
+      child.classList.remove("column");
+    });
+  }
+
   window.addEventListener("resize", () => {
     Array.from(selectedWorks.children).forEach((child) => {
-      if (window.innerWidth < 800) {
+      if (window.innerWidth <= 800) {
         child.classList.remove("column");
-        selectedWorks.style.flexDirection = "column";
       } else {
         child.classList.add("column");
       }
