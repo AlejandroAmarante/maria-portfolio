@@ -131,7 +131,7 @@ window.onload = function () {
       const sectionHeight = section.offsetHeight;
       const sectionId = section.getAttribute("id");
 
-      const scrollPosition = window.pageYOffset + 100;
+      const scrollPosition = window.scrollY + 100;
 
       if (
         scrollPosition >= sectionTop &&
