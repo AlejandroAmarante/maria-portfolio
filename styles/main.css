@@ -445,7 +445,7 @@ body {
   #about {
     height: 100vh;
     text-align: center;
-    background-position: inherit;
+    background-position: center;
   }
 
   #about-content {
