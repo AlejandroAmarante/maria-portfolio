@@ -121,6 +121,29 @@ window.onload = function () {
     }
   };
 
+  const sections = document.querySelectorAll("section");
+  const navLinksArray = Array.from(navLinks.querySelectorAll("a"));
+
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
+    const sectionId = section.getAttribute("id");
+
+    const scrollPosition = window.scrollY + 100;
+
+    if (
+      scrollPosition >= sectionTop &&
+      scrollPosition < sectionTop + sectionHeight
+    ) {
+      navLinksArray.forEach((link) => {
+        link.classList.toggle(
+          "active",
+          link.getAttribute("href").endsWith(`#${sectionId}`)
+        );
+      });
+    }
+  });
+
   // Update navbar link based on scroll position
   window.addEventListener("scroll", () => {
     const sections = document.querySelectorAll("section");
