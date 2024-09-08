@@ -154,7 +154,7 @@ body {
 #about {
   text-align: center;
   background-image: url("../imgs/background.webp");
-  height: 70vh;
+  height: 75vh;
   background-size: 100%;
   background-position: center center;
   background-repeat: no-repeat;
@@ -171,7 +171,7 @@ body {
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 45%;
+  width: 50%;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
@@ -256,7 +256,7 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  padding-top: 100px;
+  padding-top: 80px;
 }
 
 #selected-works {
@@ -282,7 +282,7 @@ body {
   align-items: center;
   flex-wrap: wrap; /* Added flex-wrap property */
   margin: 0 auto;
-  padding-top: 100px;
+  padding-top: 80px;
 }
 
 #recent-works {
@@ -293,7 +293,7 @@ body {
   gap: 20px;
   padding: 20px;
   flex-wrap: wrap; /* Added flex-wrap property */
-  width: 60%;
+  width: 80%;
   margin: 0 auto;
 }
 
@@ -407,15 +407,35 @@ body {
 #contact {
   background: transparent;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background-image: url("../imgs/background.webp");
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+#contact-content {
+  background: rgba(240, 240, 240, 0.5);
+  border-radius: 3px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 50%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+#contact-content h2 {
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 2rem;
+  margin: 0;
+  color: #7caed3;
 }
 
 @media screen and (max-width: 800px) {

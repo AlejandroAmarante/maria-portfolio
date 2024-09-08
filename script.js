@@ -113,6 +113,12 @@ window.onload = function () {
     .catch((error) => console.error("Error fetching data:", error));
 
   // Navbar scroll behavior
+  if (window.scrollY > 120) {
+    navbar.classList.add("navbar-scroll");
+  } else {
+    navbar.classList.remove("navbar-scroll");
+  }
+
   window.onscroll = () => {
     if (window.scrollY > 120) {
       navbar.classList.add("navbar-scroll");
