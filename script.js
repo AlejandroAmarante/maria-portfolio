@@ -114,13 +114,11 @@ class WebsiteManager {
 
   showModal(imageSrc) {
     this.modalImage.src = imageSrc;
-    // Enable pointer events before showing
     this.modal.style.pointerEvents = "auto";
     this.modal.style.display = "flex";
-    // Force reflow
     this.modal.offsetHeight;
     this.modal.style.opacity = "1";
-    document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+    document.body.style.overflow = "hidden";
   }
 
   closeModal() {
@@ -128,8 +126,8 @@ class WebsiteManager {
     setTimeout(() => {
       this.modal.style.display = "none";
       this.modal.style.pointerEvents = "none";
-      document.body.style.overflow = ""; // Restore scrolling
-    }, 300); // Match transition duration
+      document.body.style.overflow = "";
+    }, 300);
   }
 
   toggleNavLinks() {
@@ -185,97 +183,140 @@ class WebsiteManager {
       const response = await fetch("data.json");
       const data = await response.json();
 
-      this.renderWorks(
-        data["selected-works"],
+      // Group items by section
+      const sections = {
+        "selected-works": [],
+        "recent-works": [],
+        "social-media": [],
+      };
+
+      data.items.forEach((item) => {
+        if (sections[item.section]) {
+          sections[item.section].push(item);
+        }
+      });
+
+      // Render each section
+      this.renderItems(
+        sections["selected-works"],
         this.elements.selectedWorks,
-        true
+        "selected-works"
       );
-      this.renderWorks(data["recent-works"], this.elements.recentWorks, false);
-      this.renderSocialMedia(data["social-media"], this.elements.socialMedia);
+      this.renderItems(
+        sections["recent-works"],
+        this.elements.recentWorks,
+        "recent-works"
+      );
+      this.renderItems(
+        sections["social-media"],
+        this.elements.socialMedia,
+        "social-media"
+      );
     } catch (error) {
       console.error("Error loading content:", error);
     }
   }
 
-  renderSocialMedia(posts, container) {
-    if (!Array.isArray(posts)) {
-      console.error("Social media posts must be an array");
+  renderItems(items, container, section) {
+    if (!Array.isArray(items)) {
+      console.error("Items must be an array");
       return;
     }
 
-    container.innerHTML = ""; // Clear existing content
+    container.innerHTML = "";
 
-    posts.forEach((post) => {
-      const card = document.createElement("div");
-      card.className = "social-media-card";
-      card.style.cursor = "pointer";
-
-      const image = document.createElement("img");
-      image.src = post.image;
-      image.alt = post.description || "Social media post";
-      image.loading = "lazy"; // Add lazy loading
-
-      // Add click handler to show modal
-      card.addEventListener("click", () => this.showModal(post.image));
-
-      card.appendChild(image);
-      container.appendChild(card);
+    items.forEach((item) => {
+      const element = this.createItemElement(item, section);
+      container.appendChild(element);
     });
   }
 
-  renderWorks(works, container, flexColumn) {
-    if (!Array.isArray(works)) {
-      console.error("Works must be an array");
-      return;
+  createItemElement(item, section) {
+    const displayType = item.displayType || "image-only";
+
+    // Handle different display types
+    switch (displayType) {
+      case "image-only":
+        return this.createImageOnlyCard(item);
+      case "horizontal-card":
+        return this.createFullCard(item, true);
+      case "vertical-card":
+        return this.createFullCard(item, false);
+      default:
+        // Fallback to image-only if displayType is unknown
+        return this.createImageOnlyCard(item);
     }
-
-    container.innerHTML = ""; // Clear existing content
-
-    works.forEach((work) => {
-      const card = this.createCard(work, flexColumn);
-      container.appendChild(card);
-    });
   }
 
-  createCard(work, flexColumn) {
-    const card = document.createElement("a");
-    card.className = `card${flexColumn ? " column" : ""}`;
-    card.href = work.link;
-    card.target = "_blank";
+  createImageOnlyCard(item) {
+    const card = document.createElement("div");
+    card.className = "social-media-card";
+    card.style.cursor = "pointer";
 
     const image = document.createElement("img");
-    image.src = work.image;
-    image.loading = "lazy"; // Add lazy loading
+    image.src = item.image;
+    image.alt = item.description || "Image";
+    image.loading = "lazy";
+
+    card.addEventListener("click", () => this.showModal(item.image));
     card.appendChild(image);
+
+    return card;
+  }
+
+  createFullCard(item, isColumn) {
+    const card = document.createElement("a");
+    card.className = `card${isColumn ? " column" : ""}`;
+
+    // Only set href and target if link exists
+    if (item.link) {
+      card.href = item.link;
+      card.target = "_blank";
+    } else {
+      card.style.cursor = "default";
+      card.onclick = (e) => e.preventDefault();
+    }
+
+    // Image (always present based on structure)
+    if (item.image) {
+      const image = document.createElement("img");
+      image.src = item.image;
+      image.loading = "lazy";
+      card.appendChild(image);
+    }
 
     const content = document.createElement("div");
     content.className = "card-content";
 
-    if (work.title) {
+    // Title (if exists)
+    if (item.title) {
       const title = document.createElement("h2");
-      title.textContent = work.title;
+      title.textContent = item.title;
       content.appendChild(title);
     }
 
-    if (work.description) {
+    // Description (if exists)
+    if (item.description) {
       const description = document.createElement("p");
-      description.textContent = work.description;
+      description.textContent = item.description;
       content.appendChild(description);
     }
 
-    const tagContainer = document.createElement("div");
-    tagContainer.className = "tag-container";
+    // Tags (if exists)
+    if (item.tags && Array.isArray(item.tags)) {
+      const tagContainer = document.createElement("div");
+      tagContainer.className = "tag-container";
 
-    if (work.tags) {
-      work.tags.forEach((tagText) => {
+      item.tags.forEach((tagText) => {
         const tag = document.createElement("div");
         tag.className = "tag";
         tag.textContent = tagText;
         tagContainer.appendChild(tag);
       });
+
+      content.appendChild(tagContainer);
     }
 
-    content.appendChild(tagContainer);
     card.appendChild(content);
     return card;
   }
