@@ -6,19 +6,16 @@ const LOADING_ANIMATION_DELAY = 1000;
 class WebsiteManager {
   constructor() {
     this.elements = {
-      loadingAnimation: document.getElementById("loading-animation"),
+      loadingScreen: document.querySelector(".loading-screen"),
       aboutSection: document.getElementById("about"),
-      hamburgerMenu: document.getElementById("hamburger-menu"),
-      hamburgerIcon: document.getElementById("menu-icon"),
-      closeIcon: document.getElementById("close-icon"),
-      navLinks: document.getElementById("nav-links"),
-      navbar: document.getElementById("navbar"),
-      selectedWorks: document.getElementById("selected-works"),
-      recentWorks: document.getElementById("recent-works"),
-      socialMedia: document.getElementById("social-media"),
+      menuToggle: document.querySelector(".menu-toggle"),
+      navList: document.querySelector(".nav-list"),
+      sidebar: document.querySelector(".sidebar-nav"),
+      selectedWorksGrid: document.querySelector("#selected-works .works-grid"),
+      recentWorksGrid: document.querySelector("#recent-works .works-grid"),
+      socialGrid: document.querySelector("#social-showcase .works-grid"),
     };
 
-    // Create modal elements
     this.createModalElements();
     this.init();
   }
@@ -27,45 +24,15 @@ class WebsiteManager {
     // Create modal container
     this.modal = document.createElement("div");
     this.modal.className = "modal";
-    this.modal.style.cssText = `
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    `;
 
     // Create close button
     this.modalClose = document.createElement("span");
-    this.modalClose.className = "modal-close";
+    this.modalClose.className = "modal__close";
     this.modalClose.innerHTML = "&times;";
-    this.modalClose.style.cssText = `
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-    `;
 
     // Create modal image
     this.modalImage = document.createElement("img");
-    this.modalImage.className = "modal-content";
-    this.modalImage.style.cssText = `
-      max-width: 90%;
-      max-height: 90vh;
-      margin: auto;
-      display: block;
-    `;
+    this.modalImage.className = "modal__image";
 
     // Assemble modal
     this.modal.appendChild(this.modalClose);
@@ -82,10 +49,10 @@ class WebsiteManager {
 
   setupEventListeners() {
     // Navigation
-    this.elements.hamburgerMenu.addEventListener("click", () =>
-      this.toggleNavLinks()
+    this.elements.menuToggle.addEventListener("click", () =>
+      this.toggleNavigation()
     );
-    this.elements.navLinks.addEventListener("click", (event) =>
+    this.elements.navList.addEventListener("click", (event) =>
       this.handleNavLinkClick(event)
     );
 
@@ -114,43 +81,34 @@ class WebsiteManager {
 
   showModal(imageSrc) {
     this.modalImage.src = imageSrc;
-    this.modal.style.pointerEvents = "auto";
-    this.modal.style.display = "flex";
-    this.modal.offsetHeight;
-    this.modal.style.opacity = "1";
+    this.modal.classList.add("active");
     document.body.style.overflow = "hidden";
   }
 
   closeModal() {
-    this.modal.style.opacity = "0";
-    setTimeout(() => {
-      this.modal.style.display = "none";
-      this.modal.style.pointerEvents = "none";
-      document.body.style.overflow = "";
-    }, 300);
+    this.modal.classList.remove("active");
+    document.body.style.overflow = "";
   }
 
-  toggleNavLinks() {
-    const { navLinks, hamburgerIcon, closeIcon, navbar } = this.elements;
-    navLinks.classList.toggle("show");
+  toggleNavigation() {
+    const { navList, menuToggle, sidebar } = this.elements;
 
-    const isMenuOpen = navLinks.classList.contains("show");
-    hamburgerIcon.style.display = isMenuOpen ? "none" : "block";
-    closeIcon.style.display = isMenuOpen ? "block" : "none";
-    navbar.style.backgroundColor = isMenuOpen ? "#7caed3" : "transparent";
+    navList.classList.toggle("show");
+    menuToggle.classList.toggle("active");
+    sidebar.classList.toggle("show");
   }
 
   handleNavLinkClick(event) {
     if (
       event.target.tagName === "A" &&
-      this.elements.navLinks.classList.contains("show")
+      this.elements.navList.classList.contains("show")
     ) {
-      this.toggleNavLinks();
+      this.toggleNavigation();
     }
   }
 
   handleNavbarScroll() {
-    this.elements.navbar.classList.toggle(
+    this.elements.sidebar.classList.toggle(
       "navbar-scroll",
       window.scrollY > NAVBAR_SCROLL_THRESHOLD
     );
@@ -158,7 +116,7 @@ class WebsiteManager {
 
   updateActiveNavLink() {
     const sections = document.querySelectorAll("section");
-    const navLinks = Array.from(this.elements.navLinks.querySelectorAll("a"));
+    const navLinks = Array.from(this.elements.navList.querySelectorAll("a"));
     const scrollPosition = window.scrollY + 100;
 
     sections.forEach((section) => {
@@ -199,25 +157,16 @@ class WebsiteManager {
       // Render each section
       this.renderItems(
         sections["selected-works"],
-        this.elements.selectedWorks,
-        "selected-works"
+        this.elements.selectedWorksGrid
       );
-      this.renderItems(
-        sections["recent-works"],
-        this.elements.recentWorks,
-        "recent-works"
-      );
-      this.renderItems(
-        sections["social-media"],
-        this.elements.socialMedia,
-        "social-media"
-      );
+      this.renderItems(sections["recent-works"], this.elements.recentWorksGrid);
+      this.renderItems(sections["social-media"], this.elements.socialGrid);
     } catch (error) {
       console.error("Error loading content:", error);
     }
   }
 
-  renderItems(items, container, section) {
+  renderItems(items, container) {
     if (!Array.isArray(items)) {
       console.error("Items must be an array");
       return;
@@ -226,15 +175,14 @@ class WebsiteManager {
     container.innerHTML = "";
 
     items.forEach((item) => {
-      const element = this.createItemElement(item, section);
+      const element = this.createItemElement(item);
       container.appendChild(element);
     });
   }
 
-  createItemElement(item, section) {
+  createItemElement(item) {
     const displayType = item.displayType || "image-only";
 
-    // Handle different display types
     switch (displayType) {
       case "image-only":
         return this.createImageOnlyCard(item);
@@ -243,20 +191,19 @@ class WebsiteManager {
       case "vertical-card":
         return this.createFullCard(item, false);
       default:
-        // Fallback to image-only if displayType is unknown
         return this.createImageOnlyCard(item);
     }
   }
 
   createImageOnlyCard(item) {
     const card = document.createElement("div");
-    card.className = "social-media-card";
-    card.style.cursor = "pointer";
+    card.className = "card card--image-only";
 
     const image = document.createElement("img");
     image.src = item.image;
     image.alt = item.description || "Image";
     image.loading = "lazy";
+    image.className = "card__image";
 
     card.addEventListener("click", () => this.showModal(item.image));
     card.appendChild(image);
@@ -264,9 +211,9 @@ class WebsiteManager {
     return card;
   }
 
-  createFullCard(item, isColumn) {
+  createFullCard(item, isHorizontal) {
     const card = document.createElement("a");
-    card.className = `card${isColumn ? " column" : ""}`;
+    card.className = `card${isHorizontal ? " card--horizontal" : ""}`;
 
     // Only set href and target if link exists
     if (item.link) {
@@ -282,16 +229,18 @@ class WebsiteManager {
       const image = document.createElement("img");
       image.src = item.image;
       image.loading = "lazy";
+      image.className = "card__image";
       card.appendChild(image);
     }
 
     const content = document.createElement("div");
-    content.className = "card-content";
+    content.className = "card__content";
 
     // Title (if exists)
     if (item.title) {
       const title = document.createElement("h2");
       title.textContent = item.title;
+      title.className = "card__title";
       content.appendChild(title);
     }
 
@@ -299,22 +248,23 @@ class WebsiteManager {
     if (item.description) {
       const description = document.createElement("p");
       description.textContent = item.description;
+      description.className = "card__description";
       content.appendChild(description);
     }
 
     // Tags (if exists)
     if (item.tags && Array.isArray(item.tags)) {
-      const tagContainer = document.createElement("div");
-      tagContainer.className = "tag-container";
+      const tagList = document.createElement("div");
+      tagList.className = "tag-list";
 
       item.tags.forEach((tagText) => {
         const tag = document.createElement("div");
         tag.className = "tag";
         tag.textContent = tagText;
-        tagContainer.appendChild(tag);
+        tagList.appendChild(tag);
       });
 
-      content.appendChild(tagContainer);
+      content.appendChild(tagList);
     }
 
     card.appendChild(content);
@@ -322,11 +272,11 @@ class WebsiteManager {
   }
 
   updateLayoutForCurrentDevice() {
-    const cards = Array.from(this.elements.selectedWorks.children);
+    const cards = Array.from(this.elements.selectedWorksGrid.children);
     const isMobile = window.innerWidth <= BREAKPOINT_MOBILE;
 
     cards.forEach((card) => {
-      card.classList.toggle("column", !isMobile);
+      card.classList.toggle("card--horizontal", !isMobile);
     });
   }
 
@@ -341,16 +291,15 @@ class WebsiteManager {
   }
 
   hideLoadingAnimation() {
-    const { loadingAnimation } = this.elements;
+    const { loadingScreen } = this.elements;
 
     setTimeout(() => {
-      loadingAnimation.style.transition = "transform 1s ease-out";
-      loadingAnimation.style.transform = "translateY(-100vh)";
+      loadingScreen.classList.add("hidden");
 
-      loadingAnimation.addEventListener(
+      loadingScreen.addEventListener(
         "transitionend",
         () => {
-          loadingAnimation.style.display = "none";
+          loadingScreen.style.display = "none";
         },
         { once: true }
       );

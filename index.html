@@ -13,72 +13,88 @@
 </head>
 
 <body>
-    <div class="container">
-        <nav id="navbar">
-            <h1 id="name">Maria <br>Hernandez</h1>
-            <div id="hamburger-menu">
-                <!-- Hamburger icon using HTML entities -->
-                <img src="./imgs/menu-line.svg" alt="Hamburger Menu" id="menu-icon" width="36">
-                <img src="./imgs/close-line.svg" alt="Close Menu" id="close-icon" width="36">
+    <div class="main-container">
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+            <h1 class="site-title">Maria <br>Hernandez</h1>
+            <div class="menu-toggle">
+                <img src="./imgs/menu-line.svg" alt="Hamburger Menu" class="menu-toggle__icon" width="36">
+                <img src="./imgs/close-line.svg" alt="Close Menu" class="menu-toggle__icon--close" width="36">
             </div>
-            <ul id="nav-links">
-                <a href="#about">About Me</a>
-                <a href="#selected-works-container">Selected Works</a>
-                <a href="#recent-works-container">Recent Works</a>
-                <a href="#social-media-showcase">Social Posts</a>
-                <a href="https://www.linkedin.com/in/maria-del-hernandez/" target="_blank" class="nav-button"><svg
-                        xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+            <ul class="nav-list">
+                <a href="#about" class="nav-list__link">About Me</a>
+                <a href="#selected-works" class="nav-list__link">Selected Works</a>
+                <a href="#recent-works" class="nav-list__link">Recent Works</a>
+                <a href="#social-showcase" class="nav-list__link">Social Posts</a>
+                <a href="https://www.linkedin.com/in/maria-del-hernandez/" target="_blank"
+                    class="nav-list__link nav-list__link--button">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                         <path fill="#ffffff"
                             d="M444.17 32H70.28C49.85 32 32 46.7 32 66.89v374.72C32 461.91 49.85 480 70.28 480h373.78c20.54 0 35.94-18.21 35.94-38.39V66.89C480.12 46.7 464.6 32 444.17 32zm-273.3 373.43h-64.18V205.88h64.18zM141 175.54h-.46c-20.54 0-33.84-15.29-33.84-34.43 0-19.49 13.65-34.42 34.65-34.42s33.85 14.82 34.31 34.42c-.01 19.14-13.31 34.43-34.66 34.43zm264.43 229.89h-64.18V296.32c0-26.14-9.34-44-32.56-44-17.74 0-28.24 12-32.91 23.69-1.75 4.2-2.22 9.92-2.22 15.76v113.66h-64.18V205.88h64.18v27.77c9.34-13.3 23.93-32.44 57.88-32.44 42.13 0 74 27.77 74 87.64z" />
-                    </svg>LinkedIn</a>
+                    </svg>
+                    LinkedIn
+                </a>
             </ul>
         </nav>
-        <section id="about" href="#about">
-            <div id="about-content">
-                <div id="about-info">
-                    <h1 id="about-heading-mobile" class="hidden">Storyteller, SEO Specialist, and Editing Aficionado
+
+        <!-- Loading Animation -->
+        <div class="loading-screen">
+            <object type="image/svg+xml" data="./imgs/loading-ring.svg"></object>
+        </div>
+
+        <!-- About Section -->
+        <section id="about" class="section section--centered section--with-background">
+            <div class="section__content">
+                <div class="about-info">
+                    <h1 class="about-info__heading--mobile hidden">Storyteller, SEO Specialist, and Editing Aficionado
                     </h1>
-                    <div id="about-img">
-                        <img src="./imgs/maria-amarante.jpg" alt="Maria Amarante">
+                    <div class="about-info__image-wrapper">
+                        <img src="./imgs/maria-amarante.jpg" alt="Maria Amarante" class="about-info__image">
                     </div>
-                    <div id="about-text">
-                        <h1 id="about-heading">Storyteller, SEO Specialist, and Editing Aficionado</h1>
-                        <p>
+                    <div class="about-info__text">
+                        <h1 class="about-info__heading">Marketing Strategist, SEO Specialist, and Editing Aficionado
+                        </h1>
+                        <p class="about-info__description">
                             I am a dedicated professional with a passion for writing and problem-solving. I earned a
-                            Bachelor's Degree in English
-                            with a minor in Digital Media from the University of Central Florida. My diverse
-                            experience includes working
-                            with the Walt Disney Company, Quillt Media, and most recently, editing and publishing
-                            for
-                            Study.com.
+                            Bachelor's Degree in English with a minor in Digital Media from the University of Central
+                            Florida. My diverse
+                            experience includes working with the Walt Disney Company, Quillt Media, and most recently,
+                            editing and publishing
+                            for Study.com.
                         </p>
                         <a class="about-link"
                             href="https://www.linkedin.com/in/maria-del-hernandez/details/certifications/"
-                            target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="currentColor">
+                            target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                 <path
                                     d="M10.007 2.10377C8.60544 1.65006 7.08181 2.28116 6.41156 3.59306L5.60578 5.17023C5.51004 5.35763 5.35763 5.51004 5.17023 5.60578L3.59306 6.41156C2.28116 7.08181 1.65006 8.60544 2.10377 10.007L2.64923 11.692C2.71404 11.8922 2.71404 12.1078 2.64923 12.308L2.10377 13.993C1.65006 15.3946 2.28116 16.9182 3.59306 17.5885L5.17023 18.3942C5.35763 18.49 5.51004 18.6424 5.60578 18.8298L6.41156 20.407C7.08181 21.7189 8.60544 22.35 10.007 21.8963L11.692 21.3508C11.8922 21.286 12.1078 21.286 12.308 21.3508L13.993 21.8963C15.3946 22.35 16.9182 21.7189 17.5885 20.407L18.3942 18.8298C18.49 18.6424 18.6424 18.49 18.8298 18.3942L20.407 17.5885C21.7189 16.9182 22.35 15.3946 21.8963 13.993L21.3508 12.308C21.286 12.1078 21.286 11.8922 21.3508 11.692L21.8963 10.007C22.35 8.60544 21.7189 7.08181 20.407 6.41156L18.8298 5.60578C18.6424 5.51004 18.49 5.35763 18.3942 5.17023L17.5885 3.59306C16.9182 2.28116 15.3946 1.65006 13.993 2.10377L12.308 2.64923C12.1078 2.71403 11.8922 2.71404 11.692 2.64923L10.007 2.10377ZM6.75977 11.7573L8.17399 10.343L11.0024 13.1715L16.6593 7.51465L18.0735 8.92886L11.0024 15.9999L6.75977 11.7573Z">
                                 </path>
-                            </svg>Certifications</a>
+                            </svg>
+                            Certifications
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
-        <div id="loading-animation">
-            <object type="image/svg+xml" data="./imgs/loading-ring.svg"></object>
-        </div>
-        <section id="selected-works-container">
-            <h1 class="section-title">Selected Works</h1>
-            <div id="selected-works"></div>
+
+        <!-- Selected Works Section -->
+        <section id="selected-works" class="works-section">
+            <h1 class="section__title">Selected Works</h1>
+            <div class="works-grid works-grid--selected"></div>
         </section>
-        <section id="recent-works-container">
-            <h1 class="section-title">Recent Works</h1>
-            <div id="recent-works"></div>
+
+        <!-- Recent Works Section -->
+        <section id="recent-works" class="works-section">
+            <h1 class="section__title">Recent Works</h1>
+            <div class="works-grid"></div>
         </section>
-        <section id="social-media-showcase">
-            <h1 class="section-title">Social Posts</h1>
-            <div id="social-media"></div>
+
+        <!-- Social Media Showcase Section -->
+        <section id="social-showcase" class="works-section social-showcase">
+            <h1 class="section__title">Social Posts</h1>
+            <div class="works-grid"></div>
         </section>
+
         <script src="script.js"></script>
     </div>
 
