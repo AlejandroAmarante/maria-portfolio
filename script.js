@@ -13,28 +13,29 @@ class WebsiteManager {
       sidebar: document.querySelector(".sidebar-nav"),
       selectedWorksGrid: document.querySelector("#selected-works .works-grid"),
       recentWorksGrid: document.querySelector("#recent-works .works-grid"),
+      clientBlogsGrid: document.querySelector("#client-blogs .works-grid"),
       socialGrid: document.querySelector("#social-showcase .works-grid"),
+      revenueChart: document.getElementById("revenueChart"),
+      trafficChart: document.getElementById("trafficChart"),
+      conversionChart: document.getElementById("conversionChart"),
     };
 
+    this.charts = {};
     this.createModalElements();
     this.init();
   }
 
   createModalElements() {
-    // Create modal container
     this.modal = document.createElement("div");
     this.modal.className = "modal";
 
-    // Create close button
     this.modalClose = document.createElement("span");
     this.modalClose.className = "modal__close";
     this.modalClose.innerHTML = "&times;";
 
-    // Create modal image
     this.modalImage = document.createElement("img");
     this.modalImage.className = "modal__image";
 
-    // Assemble modal
     this.modal.appendChild(this.modalClose);
     this.modal.appendChild(this.modalImage);
     document.body.appendChild(this.modal);
@@ -43,40 +44,258 @@ class WebsiteManager {
   init() {
     this.setupEventListeners();
     this.loadContent();
+    this.initializeCharts();
     this.checkBackgroundImageLoaded();
     this.updateLayoutForCurrentDevice();
   }
 
   setupEventListeners() {
-    // Navigation
-    this.elements.menuToggle.addEventListener("click", () =>
-      this.toggleNavigation()
-    );
-    this.elements.navList.addEventListener("click", (event) =>
-      this.handleNavLinkClick(event)
-    );
+    if (this.elements.menuToggle) {
+      this.elements.menuToggle.addEventListener("click", () =>
+        this.toggleNavigation()
+      );
+    }
 
-    // Scroll handling
+    if (this.elements.navList) {
+      this.elements.navList.addEventListener("click", (event) =>
+        this.handleNavLinkClick(event)
+      );
+    }
+
     window.addEventListener("scroll", () => {
       this.handleNavbarScroll();
       this.updateActiveNavLink();
     });
 
-    // Resize handling
     window.addEventListener("resize", () =>
       this.updateLayoutForCurrentDevice()
     );
 
-    // Modal handling
     this.modalClose.addEventListener("click", () => this.closeModal());
     this.modal.addEventListener("click", (e) => {
       if (e.target === this.modal) this.closeModal();
     });
 
-    // Keyboard handling for modal
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") this.closeModal();
     });
+  }
+
+  initializeCharts() {
+    const labels = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const chartDefaults = {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          align: "center",
+          font: {
+            size: 18,
+            weight: "bold",
+          },
+          padding: {
+            top: 10,
+            bottom: 20
+          },
+        },
+        annotation: {
+          annotations: {
+            hireDate: {
+              type: "line",
+              xMin: 6.5,
+              xMax: 6.5,
+              borderColor: "#ef4444",
+              borderWidth: 2,
+              borderDash: [6, 6],
+              label: {
+                display: true,
+                content: "Hire Date",
+                position: "end",
+                backgroundColor: "#ef4444",
+                color: "#fff",
+                font: {
+                  size: 13,
+                  weight: "bold",
+                },
+                padding: 6,
+                yAdjust: 10
+              },
+            },
+          },
+        },
+      },
+      layout: {
+        padding: {
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 10,
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+          },
+          grace: "50%",
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+        },
+      },
+    };
+
+    // Revenue Chart
+    if (this.elements.revenueChart) {
+      this.charts.revenue = new Chart(this.elements.revenueChart, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Monthly Revenue ($)",
+              data: [
+                12000, 13000, 12500, 14000, 13500, 14500, 14200, 17000, 18500,
+                20000, 22000, 24000,
+              ],
+              segment: {
+                borderColor: (ctx) => {
+                  return ctx.p0DataIndex < 7 ? "#758fb5" : "#90c8f3ff";
+                },
+                backgroundColor: (ctx) => {
+                  return ctx.p0DataIndex < 7
+                    ? "rgba(117, 143, 181, 0.1)"
+                    : "rgba(124, 174, 211, 0.1)";
+                },
+              },
+              borderWidth: 3,
+              pointRadius: 5,
+              pointBackgroundColor: (ctx) => {
+                return ctx.dataIndex < 7 ? "#758fb5" : "#90c8f3ff";
+              },
+              pointBorderColor: "#fff",
+              pointBorderWidth: 2,
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          ...chartDefaults,
+          plugins: {
+            ...chartDefaults.plugins,
+            title: {
+              ...chartDefaults.plugins.title,
+              text: "Monthly Revenue ($)",
+
+            },
+          },
+        },
+      });
+    }
+
+    // Traffic Chart
+    if (this.elements.trafficChart) {
+      this.charts.traffic = new Chart(this.elements.trafficChart, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Website Traffic",
+              data: [
+                4000, 4200, 4100, 4300, 4400, 4500, 4600, 6500, 7200, 7800,
+                8200, 9000,
+              ],
+              backgroundColor: (ctx) => {
+                return ctx.dataIndex < 7 ? "#758fb5da" : "#90c8f3da";
+              },
+              borderColor: (ctx) => {
+                return ctx.dataIndex < 7 ? "#758fb5" : "#90c8f3ff";
+              },
+              borderWidth: 2,
+              borderRadius: 6,
+            },
+          ],
+        },
+        options: {
+          ...chartDefaults,
+          plugins: {
+            ...chartDefaults.plugins,
+            title: {
+              ...chartDefaults.plugins.title,
+              text: "Website Traffic",
+            },
+          },
+        },
+      });
+    }
+
+    // Conversion Chart
+    if (this.elements.conversionChart) {
+      this.charts.conversion = new Chart(this.elements.conversionChart, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Conversion Rate (%)",
+              data: [
+                1.4, 1.5, 1.6, 1.5, 1.6, 1.7, 1.6, 2.3, 2.6, 2.8, 3.0, 3.2,
+              ],
+              segment: {
+                borderColor: (ctx) => {
+                  return ctx.p0DataIndex < 7 ? "#758fb5" : "#90c8f3ff";
+                },
+                backgroundColor: (ctx) => {
+                  return ctx.p0DataIndex < 7
+                    ? "rgba(117, 143, 181, 0.1)"
+                    : "rgba(124, 174, 211, 0.1)";
+                },
+              },
+              borderWidth: 3,
+              pointRadius: 5,
+              pointBackgroundColor: (ctx) => {
+                return ctx.dataIndex < 7 ? "#758fb5" : "#90c8f3ff";
+              },
+              pointBorderColor: "#fff",
+              pointBorderWidth: 2,
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          ...chartDefaults,
+          plugins: {
+            ...chartDefaults.plugins,
+            title: {
+              ...chartDefaults.plugins.title,
+              text: "Conversion Rate (%)",
+            },
+          },
+        },
+      });
+    }
   }
 
   showModal(imageSrc) {
@@ -92,6 +311,7 @@ class WebsiteManager {
 
   toggleNavigation() {
     const { navList, menuToggle, sidebar } = this.elements;
+    if (!navList || !menuToggle || !sidebar) return;
 
     navList.classList.toggle("show");
     menuToggle.classList.toggle("active");
@@ -101,13 +321,15 @@ class WebsiteManager {
   handleNavLinkClick(event) {
     if (
       event.target.tagName === "A" &&
-      this.elements.navList.classList.contains("show")
+      this.elements.navList?.classList.contains("show")
     ) {
       this.toggleNavigation();
     }
   }
 
   handleNavbarScroll() {
+    if (!this.elements.sidebar) return;
+
     this.elements.sidebar.classList.toggle(
       "navbar-scroll",
       window.scrollY > NAVBAR_SCROLL_THRESHOLD
@@ -115,11 +337,15 @@ class WebsiteManager {
   }
 
   updateActiveNavLink() {
+    if (!this.elements.navList) return;
+
     const sections = document.querySelectorAll("section");
     const navLinks = Array.from(this.elements.navList.querySelectorAll("a"));
     const scrollPosition = window.scrollY + 100;
 
     sections.forEach((section) => {
+      if (section.offsetParent === null) return;
+
       const { offsetTop, offsetHeight, id } = section;
       const isInView =
         scrollPosition >= offsetTop &&
@@ -129,7 +355,7 @@ class WebsiteManager {
         navLinks.forEach((link) => {
           link.classList.toggle(
             "active",
-            link.getAttribute("href").endsWith(`#${id}`)
+            link.getAttribute("href")?.endsWith(`#${id}`)
           );
         });
       }
@@ -141,11 +367,11 @@ class WebsiteManager {
       const response = await fetch("data.json");
       const data = await response.json();
 
-      // Group items by section
       const sections = {
         "selected-works": [],
         "recent-works": [],
         "social-media": [],
+        "client-blogs": [],
       };
 
       data.items.forEach((item) => {
@@ -154,25 +380,38 @@ class WebsiteManager {
         }
       });
 
-      // Render each section
       this.renderItems(
         sections["selected-works"],
         this.elements.selectedWorksGrid
       );
       this.renderItems(sections["recent-works"], this.elements.recentWorksGrid);
       this.renderItems(sections["social-media"], this.elements.socialGrid);
+      this.renderItems(sections["client-blogs"], this.elements.clientBlogsGrid);
     } catch (error) {
       console.error("Error loading content:", error);
     }
   }
 
   renderItems(items, container) {
-    if (!Array.isArray(items)) {
-      console.error("Items must be an array");
+    if (!container || !Array.isArray(items)) return;
+
+    const section = container.closest("section");
+    const sectionId = section?.id;
+
+    container.innerHTML = "";
+
+    if (items.length === 0) {
+      if (section) section.style.display = "none";
+
+      const navLink = this.elements.navList?.querySelector(
+        `a[href="#${sectionId}"]`
+      );
+      if (navLink) navLink.style.display = "none";
+
       return;
     }
 
-    container.innerHTML = "";
+    if (section) section.style.display = "";
 
     items.forEach((item) => {
       const element = this.createItemElement(item);
@@ -184,8 +423,6 @@ class WebsiteManager {
     const displayType = item.displayType || "image-only";
 
     switch (displayType) {
-      case "image-only":
-        return this.createImageOnlyCard(item);
       case "horizontal-card":
         return this.createFullCard(item, true);
       case "vertical-card":
@@ -215,7 +452,6 @@ class WebsiteManager {
     const card = document.createElement("a");
     card.className = `card${isHorizontal ? " card--horizontal" : ""}`;
 
-    // Only set href and target if link exists
     if (item.link) {
       card.href = item.link;
       card.target = "_blank";
@@ -224,7 +460,6 @@ class WebsiteManager {
       card.onclick = (e) => e.preventDefault();
     }
 
-    // Image (always present based on structure)
     if (item.image) {
       const image = document.createElement("img");
       image.src = item.image;
@@ -236,7 +471,6 @@ class WebsiteManager {
     const content = document.createElement("div");
     content.className = "card__content";
 
-    // Title (if exists)
     if (item.title) {
       const title = document.createElement("h2");
       title.textContent = item.title;
@@ -244,7 +478,6 @@ class WebsiteManager {
       content.appendChild(title);
     }
 
-    // Description (if exists)
     if (item.description) {
       const description = document.createElement("p");
       description.textContent = item.description;
@@ -252,8 +485,7 @@ class WebsiteManager {
       content.appendChild(description);
     }
 
-    // Tags (if exists)
-    if (item.tags && Array.isArray(item.tags)) {
+    if (Array.isArray(item.tags) && item.tags.length) {
       const tagList = document.createElement("div");
       tagList.className = "tag-list";
 
@@ -272,7 +504,10 @@ class WebsiteManager {
   }
 
   updateLayoutForCurrentDevice() {
-    const cards = Array.from(this.elements.selectedWorksGrid.children);
+    const grid = this.elements.selectedWorksGrid;
+    if (!grid) return;
+
+    const cards = Array.from(grid.children);
     const isMobile = window.innerWidth <= BREAKPOINT_MOBILE;
 
     cards.forEach((card) => {
@@ -281,17 +516,27 @@ class WebsiteManager {
   }
 
   checkBackgroundImageLoaded() {
-    const bgUrl = window
-      .getComputedStyle(this.elements.aboutSection)
-      .backgroundImage.slice(5, -2);
+    if (!this.elements.aboutSection) return;
 
+    const bgImageValue = window.getComputedStyle(
+      this.elements.aboutSection
+    ).backgroundImage;
+
+    if (!bgImageValue || bgImageValue === "none") {
+      this.hideLoadingAnimation();
+      return;
+    }
+
+    const bgUrl = bgImageValue.slice(5, -2);
     const bgImage = new Image();
+
     bgImage.onload = () => this.hideLoadingAnimation();
     bgImage.src = bgUrl;
   }
 
   hideLoadingAnimation() {
     const { loadingScreen } = this.elements;
+    if (!loadingScreen) return;
 
     setTimeout(() => {
       loadingScreen.classList.add("hidden");
@@ -307,5 +552,4 @@ class WebsiteManager {
   }
 }
 
-// Initialize when DOM is loaded
 window.onload = () => new WebsiteManager();

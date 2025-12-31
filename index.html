@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=WindSong:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1"></script>
 </head>
 
 <body>
@@ -23,9 +26,12 @@
             </div>
             <ul class="nav-list">
                 <a href="#about" class="nav-list__link">About Me</a>
-                <a href="#selected-works" class="nav-list__link">Selected Works</a>
-                <a href="#recent-works" class="nav-list__link">Recent Works</a>
+                <!-- <a href="#selected-works" class="nav-list__link">Selected Works</a>
+                <a href="#recent-works" class="nav-list__link">Recent Works</a> -->
+                <a href="#results" class="nav-list__link">Results</a>
                 <a href="#social-showcase" class="nav-list__link">Social Posts</a>
+                <a href="#site-redesigns" class="nav-list__link">Site Redesigns</a>
+                <a href="#client-blogs" class="nav-list__link">Client Blog Posts</a>
                 <a href="https://www.linkedin.com/in/maria-del-hernandez/" target="_blank"
                     class="nav-list__link nav-list__link--button">
                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
@@ -87,20 +93,66 @@
         </section>
 
         <!-- Selected Works Section -->
-        <section id="selected-works" class="works-section">
+        <!-- <section id="selected-works" class="works-section">
             <h1 class="section__title">Selected Works</h1>
             <div class="works-grid works-grid--selected"></div>
-        </section>
+        </section> -->
 
         <!-- Recent Works Section -->
-        <section id="recent-works" class="works-section">
+        <!-- <section id="recent-works" class="works-section">
             <h1 class="section__title">Recent Works</h1>
             <div class="works-grid"></div>
+        </section> -->
+
+        <!-- Results Section -->
+        <section id="results" class="works-section">
+            <h1 class="section__title">Results</h1>
+
+            <div class="works-grid results-grid">
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="trafficChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="conversionChart"></canvas>
+                </div>
+            </div>
         </section>
 
         <!-- Social Media Showcase Section -->
         <section id="social-showcase" class="works-section social-showcase">
             <h1 class="section__title">Social Posts</h1>
+            <div class="works-grid"></div>
+        </section>
+
+        <!-- Site Redesigns Section -->
+        <section id="site-redesigns" class="works-section">
+            <h1 class="section__title">Site Redesigns</h1>
+
+            <div class="works-grid">
+
+                <div class="before-after">
+                    <img src="https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=800" class="before-img" />
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="after-img" />
+                    <input type="range" min="0" max="100" value="50" class="slider" />
+                </div>
+
+                <div class="before-after">
+                    <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=800" class="before-img" />
+                    <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=800" class="after-img" />
+                    <input type="range" min="0" max="100" value="50" class="slider" />
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Client Blog Posts Section -->
+        <section id="client-blogs" class="works-section">
+            <h1 class="section__title">Client Blog Posts</h1>
             <div class="works-grid"></div>
         </section>
 

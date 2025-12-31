@@ -19,31 +19,31 @@
   --color-black: #000000;
   --color-text: #000000;
   --color-overlay: rgba(240, 240, 240, 0.5);
-  
+
   /* Spacing Variables */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
   --spacing-lg: 2rem;
   --spacing-xl: 5rem;
-  
+
   /* Typography Variables */
   --font-primary: "Poppins", sans-serif;
   --font-weight-light: 300;
   --font-weight-regular: 400;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
+
   /* Layout Variables */
   --sidebar-width: 220px;
   --border-radius-sm: 0.2rem;
   --border-radius-md: 0.3rem;
   --border-radius-lg: 0.5rem;
-  
+
   /* Transition */
   --transition-fast: 0.2s ease-in-out;
   --transition-medium: 0.3s ease-in-out;
-  
+
   /* Modal */
   --modal-z-index: 1000;
   --modal-overlay-bg: rgba(0, 0, 0, 0.9);
@@ -168,16 +168,19 @@ body {
   transition: var(--transition-fast);
 }
 
+.nav-list__link:not(.nav-list__link--button) {
+  border-left: 4px solid transparent;
+  padding-left: var(--spacing-sm);
+  box-sizing: border-box;
+}
+
 .nav-list__link:hover:not(.nav-list__link--button) {
   background-color: rgba(255, 255, 255, 0.1);
-  border-left: 4px solid var(--color-white);
-  padding-left: calc(var(--spacing-sm) - 4px);
 }
 
 .nav-list__link.active:not(.nav-list__link--button) {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-left: 4px solid var(--color-white);
-  padding-left: calc(var(--spacing-sm) - 4px);
+  border-left-color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Navigation Button Variant */
@@ -424,6 +427,22 @@ body {
   margin-right: 0.3125rem;
 }
 
+/* ===========================
+   RESULTS
+=========================== */
+.results-grid{
+  width: 350px;
+}
+
+
+.results-grid .chart-container {
+  width: 500px;
+  height: 250px;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
 /* ==========================================================================
    WORKS SECTIONS
    ========================================================================== */
@@ -475,7 +494,8 @@ body {
   text-decoration: none;
   color: var(--color-text);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
-  transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+  transition: transform var(--transition-medium),
+    box-shadow var(--transition-medium);
 }
 
 .card:hover {
@@ -595,89 +615,89 @@ body {
   .main-container {
     margin-left: 0;
   }
-  
+
   /* Navigation */
   .sidebar-nav {
     transform: translateX(-100%);
   }
-  
+
   .sidebar-nav.show {
     transform: translateX(0);
   }
-  
+
   .menu-toggle {
     display: flex;
   }
-  
+
   .nav-list {
     display: flex;
   }
-  
+
   .nav-list__link {
     padding: var(--spacing-sm);
   }
-  
+
   /* About Section */
   .section--with-background {
     background-position: bottom;
   }
-  
+
   .section__content {
     width: 90%;
   }
-  
+
   .about-info {
     flex-direction: column;
     gap: var(--spacing-sm);
   }
-  
+
   .about-info__text {
     width: 90%;
   }
-  
+
   .about-info__heading {
     display: none;
   }
-  
+
   .about-info__heading--mobile {
     display: block;
   }
-  
+
   /* Works Sections */
   .works-grid--selected {
     width: 100%;
     flex-direction: row;
   }
-  
+
   .works-grid--selected > .card:nth-child(2n) {
     flex-direction: column;
   }
-  
+
   .works-grid {
     width: 100%;
   }
-  
+
   /* Tags */
   .tag-list {
     flex-wrap: wrap;
   }
-  
+
   /* Social Media */
   .works-grid {
     flex-direction: column;
     padding: 0 var(--spacing-sm);
     gap: var(--spacing-md);
   }
-  
+
   .card--image-only {
     width: 100%;
     max-width: 21.875rem;
   }
-  
+
   .works-section {
     padding-top: 2.5rem;
   }
-  
+
   .social-showcase {
     padding-bottom: 6.25rem;
   }
@@ -687,11 +707,11 @@ body {
   .card--image-only {
     font-size: 1rem;
   }
-  
+
   .works-section {
     padding-top: 1.875rem;
   }
-  
+
   .social-showcase {
     padding-bottom: 5rem;
   }
