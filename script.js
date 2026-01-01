@@ -8,6 +8,7 @@ const SECTIONS = {
   RECENT_WORKS: "recent-works",
   SOCIAL_MEDIA: "social-media",
   CLIENT_BLOGS: "client-blogs",
+  SITE_REDESIGNS: "site-redesigns",
 };
 
 const DISPLAY_TYPES = {
@@ -36,6 +37,7 @@ class WebsiteManager {
       recentWorksGrid: document.querySelector("#recent-works .works-grid"),
       clientBlogsGrid: document.querySelector("#client-blogs .works-grid"),
       socialGrid: document.querySelector("#social-showcase .works-grid"),
+      redesignGrid: document.querySelector("#site-redesigns .works-grid"),
       revenueChart: document.getElementById("revenueChart"),
       trafficChart: document.getElementById("trafficChart"),
       conversionChart: document.getElementById("conversionChart"),
@@ -411,6 +413,10 @@ class WebsiteManager {
         sections[SECTIONS.CLIENT_BLOGS],
         this.elements.clientBlogsGrid
       );
+      this.#renderRedesignSection(
+        sections[SECTIONS.SITE_REDESIGNS],
+        this.elements.redesignGrid
+      );
     } catch (error) {
       console.error("Error loading content:", error);
     }
@@ -430,6 +436,7 @@ class WebsiteManager {
         [SECTIONS.RECENT_WORKS]: [],
         [SECTIONS.SOCIAL_MEDIA]: [],
         [SECTIONS.CLIENT_BLOGS]: [],
+        [SECTIONS.SITE_REDESIGNS]: [],
       }
     );
   }
@@ -454,6 +461,148 @@ class WebsiteManager {
       fragment.appendChild(this.#createItemElement(item));
     });
     container.appendChild(fragment);
+  }
+
+  // Private method to render redesign section with before/after sliders
+  #renderRedesignSection(items, container) {
+    if (!container || !Array.isArray(items)) return;
+
+    const section = container.closest("section");
+    const isEmpty = items.length === 0;
+
+    if (isEmpty) {
+      this.#hideSection(section);
+      return;
+    }
+
+    section.style.display = "";
+    container.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+    items.forEach((item, index) => {
+      fragment.appendChild(this.#createRedesignElement(item, index));
+    });
+    container.appendChild(fragment);
+  }
+
+  // Private method to create redesign comparison element
+  #createRedesignElement(item, index) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "redesign-item";
+
+    if (item.title || item.description) {
+      const info = document.createElement("div");
+      info.className = "redesign-info";
+      if (item.title) {
+        const title = document.createElement("h3");
+        title.className = "redesign-title";
+        title.textContent = item.title;
+        info.appendChild(title);
+      }
+      if (item.description) {
+        const desc = document.createElement("p");
+        desc.className = "redesign-description";
+        desc.textContent = item.description;
+        info.appendChild(desc);
+      }
+      wrapper.appendChild(info);
+    }
+
+    const sliderWrapper = document.createElement("div");
+    sliderWrapper.className = "comparison-slider-wrapper";
+
+    const slider = document.createElement("img-comparison-slider");
+    slider.className = "comparison-slider";
+    slider.value = 50; // start centered
+
+    const beforeDiv = document.createElement("div");
+    beforeDiv.slot = "first";
+    beforeDiv.className = "before-container";
+    const beforeImg = document.createElement("img");
+    beforeImg.src = item.beforeImage;
+    beforeImg.alt = `${item.title || "Site"} - Before`;
+    beforeImg.loading = "lazy";
+    beforeDiv.appendChild(beforeImg);
+
+    const afterDiv = document.createElement("div");
+    afterDiv.slot = "second";
+    afterDiv.className = "after-container";
+    const afterImg = document.createElement("img");
+    afterImg.src = item.afterImage;
+    afterImg.alt = `${item.title || "Site"} - After`;
+    afterImg.loading = "lazy";
+    afterDiv.appendChild(afterImg);
+
+    // Create custom handle SVG
+    const handleSvg = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    handleSvg.setAttribute("slot", "handle");
+    handleSvg.setAttribute("width", "100");
+    handleSvg.setAttribute("viewBox", "-8 -3 16 6");
+    handleSvg.classList.add("custom-animated-handle");
+
+    // Create outline path (darker, thicker)
+    const outlinePath = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+    outlinePath.setAttribute("stroke", "#00000070");
+    outlinePath.setAttribute(
+      "d",
+      "M -5 -2 L -7 0 L -5 2 M -5 -2 L -5 2 M 5 -2 L 7 0 L 5 2 M 5 -2 L 5 2"
+    );
+    outlinePath.setAttribute("stroke-width", "2.5");
+    outlinePath.setAttribute("fill", "none");
+    outlinePath.setAttribute("vector-effect", "non-scaling-stroke");
+
+    // Create main path (white, on top)
+    const handlePath = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+    handlePath.setAttribute("stroke", "#fff");
+    handlePath.setAttribute(
+      "d",
+      "M -5 -2 L -7 0 L -5 2 M -5 -2 L -5 2 M 5 -2 L 7 0 L 5 2 M 5 -2 L 5 2"
+    );
+    handlePath.setAttribute("stroke-width", "1");
+    handlePath.setAttribute("fill", "#fff");
+    handlePath.setAttribute("vector-effect", "non-scaling-stroke");
+
+    handleSvg.appendChild(outlinePath); // Add outline first
+    handleSvg.appendChild(handlePath); // Add white path on top
+
+    slider.appendChild(beforeDiv);
+    slider.appendChild(afterDiv);
+    slider.appendChild(handleSvg); // Add the custom handle
+
+    const beforeLabel = document.createElement("div");
+    beforeLabel.className = "comparison-label comparison-label--before";
+    beforeLabel.textContent = "Before";
+
+    const afterLabel = document.createElement("div");
+    afterLabel.className = "comparison-label comparison-label--after";
+    afterLabel.textContent = "After";
+
+    sliderWrapper.appendChild(slider);
+    sliderWrapper.appendChild(beforeLabel);
+    sliderWrapper.appendChild(afterLabel);
+
+    wrapper.appendChild(sliderWrapper);
+
+    // ✅ REAL visibility logic
+    const updateLabels = () => {
+      const value = slider.value; // 0–100
+      beforeLabel.style.opacity = value > 15 ? "1" : "0";
+      afterLabel.style.opacity = value < 85 ? "1" : "0";
+    };
+    updateLabels();
+    slider.addEventListener("slide", updateLabels);
+    slider.addEventListener("change", updateLabels);
+
+    return wrapper;
   }
 
   // Private method to hide empty sections

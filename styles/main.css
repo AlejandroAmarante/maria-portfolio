@@ -7,7 +7,7 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
 
 :root {
@@ -441,7 +441,128 @@ body {
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
   padding-right: 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Redesign Section Styles */
+.redesign-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+}
+
+.redesign-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.redesign-info {
+  text-align: center;
+}
+
+.redesign-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.redesign-description {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Positioning context for labels */
+.comparison-slider-wrapper {
+  position: relative;
+  width: 100%;
+  outline: none;
+  width: 800px;
+}
+
+/* Slider */
+.comparison-slider {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  --divider-width: 3px;
+  --divider-color: #ffffff;
+
+  /* 🔽 HANDLE / ARROWS */
+  --default-handle-width: clamp(40px, 5vw, 200px);
+  --handle-color: #ffffff;
+  --default-handle-opacity: 1;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+
+  cursor: ew-resize;
+  outline: none;
+}
+
+/* Slotted containers */
+.before-container,
+.after-container {
+  width: 100%;
+  height: 100%;
+}
+
+.before-container img,
+.after-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay labels */
+.comparison-label {
+  position: absolute;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 150ms ease;
+}
+
+.comparison-label--before {
+  left: 1rem;
+}
+
+.comparison-label--after {
+  right: 1rem;
+}
+
+.custom-animated-handle {
+  transition: transform 0.2s;
+  opacity: 0.85;
+}
+
+.comparison-slider:hover .custom-animated-handle {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .redesign-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .comparison-slider {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 /* ==========================================================================

@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "section": "site-redesigns",
+      "title": "Paradise Landscaping & Irrigation",
+      "description": "Modern redesign focusing on user experience and conversion optimization",
+      "beforeImage": "./imgs/before-after/paradise-landscaping/before.png",
+      "afterImage": "./imgs/before-after/paradise-landscaping/after.gif"
+    },
+    {
       "section": "client-blogs",
       "image": "https://www.travelawaits.com/wp-content/uploads/2022/07/Sunset-over-Clearwater-Beach-in-Florida-scaled.jpg?fit=1380%2C920",
       "title": "10 Affordable Clearwater Beach Vacation Rentals With Incredible Ocean Views",
