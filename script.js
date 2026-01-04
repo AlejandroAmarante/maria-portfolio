@@ -3,14 +3,6 @@ const BREAKPOINT_MOBILE = 800;
 const NAVBAR_SCROLL_THRESHOLD = 120;
 const LOADING_ANIMATION_DELAY = 1000;
 
-const SECTIONS = {
-  SELECTED_WORKS: "selected-works",
-  RECENT_WORKS: "recent-works",
-  SOCIAL_MEDIA: "social-media",
-  CLIENT_BLOGS: "client-blogs",
-  SITE_REDESIGNS: "site-redesigns",
-};
-
 const DISPLAY_TYPES = {
   HORIZONTAL_CARD: "horizontal-card",
   VERTICAL_CARD: "vertical-card",
@@ -22,6 +14,8 @@ class WebsiteManager {
     this.elements = this.#cacheElements();
     this.charts = {};
     this.modal = this.#createModal();
+    this.socialMediaItems = [];
+    this.currentMediaFilter = "image";
     this.#init();
   }
 
@@ -33,14 +27,13 @@ class WebsiteManager {
       menuToggle: document.querySelector(".menu-toggle"),
       navList: document.querySelector(".nav-list"),
       sidebar: document.querySelector(".sidebar-nav"),
-      selectedWorksGrid: document.querySelector("#selected-works .works-grid"),
-      recentWorksGrid: document.querySelector("#recent-works .works-grid"),
       clientBlogsGrid: document.querySelector("#client-blogs .works-grid"),
       socialGrid: document.querySelector("#social-showcase .works-grid"),
+      mediaFilterButtons: document.querySelectorAll(".media-filter-btn"),
+      socialShowcaseSection: document.getElementById("social-showcase"),
       redesignGrid: document.querySelector("#site-redesigns .works-grid"),
-      revenueChart: document.getElementById("revenueChart"),
-      trafficChart: document.getElementById("trafficChart"),
-      conversionChart: document.getElementById("conversionChart"),
+      resultsSection: document.getElementById("results"),
+      resultsContainer: document.querySelector("#results .results-container"),
     };
   }
 
@@ -67,7 +60,6 @@ class WebsiteManager {
   #init() {
     this.#setupEventListeners();
     this.loadContent();
-    this.#initializeCharts();
     this.#checkBackgroundImageLoaded();
     this.#updateLayoutForCurrentDevice();
   }
@@ -123,61 +115,39 @@ class WebsiteManager {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") this.#closeModal();
     });
+
+    // Media filter buttons
+    this.elements.mediaFilterButtons?.forEach((btn) => {
+      btn.addEventListener("click", (e) => this.#handleMediaFilter(e));
+    });
   }
 
-  // Private method for chart initialization
-  #initializeCharts() {
-    const labels = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const chartDefaults = this.#getChartDefaults();
+  // Private method to handle media filter
+  #handleMediaFilter(e) {
+    const filterType = e.target.dataset.filter;
+    if (filterType === this.currentMediaFilter) return;
 
-    const chartConfigs = {
-      revenue: {
-        element: this.elements.revenueChart,
-        type: "line",
-        title: "Monthly Revenue ($)",
-        data: [
-          12000, 13000, 12500, 14000, 13500, 14500, 14200, 17000, 18500, 20000,
-          22000, 24000,
-        ],
-        hireDateIndex: 7, // August
-      },
-      traffic: {
-        element: this.elements.trafficChart,
-        type: "bar",
-        title: "Website Traffic",
-        data: [
-          4000, 4200, 4100, 4300, 4400, 4500, 4600, 6500, 7200, 7800, 8200,
-          9000,
-        ],
-        hireDateIndex: 7, // August
-      },
-      conversion: {
-        element: this.elements.conversionChart,
-        type: "line",
-        title: "Conversion Rate (%)",
-        data: [1.4, 1.5, 1.6, 1.5, 1.6, 1.7, 1.6, 2.3, 2.6, 2.8, 3.0, 3.2],
-        hireDateIndex: 7, // August
-      },
-    };
+    this.currentMediaFilter = filterType;
 
-    Object.entries(chartConfigs).forEach(([key, config]) => {
-      if (config.element) {
-        this.charts[key] = this.#createChart(config, labels, chartDefaults);
-      }
+    // Update button states
+    this.elements.mediaFilterButtons.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.filter === filterType);
     });
+
+    // Fade out, update content, fade in
+    const grid = this.elements.socialGrid;
+    grid.classList.add("fade-out");
+
+    setTimeout(() => {
+      const filteredItems = this.socialMediaItems.filter(
+        (item) => item.mediaType === filterType
+      );
+      this.#renderSection(filteredItems, grid);
+      grid.classList.remove("fade-out");
+      grid.classList.add("fade-in");
+
+      setTimeout(() => grid.classList.remove("fade-in"), 300);
+    }, 300);
   }
 
   // Private method to get chart defaults
@@ -195,20 +165,28 @@ class WebsiteManager {
           display: true,
           align: "center",
           font: { size: 18, weight: "bold", family: "'Poppins', sans-serif" },
-          padding: { top: 10, bottom: 20 },
+          padding: { top: 10, bottom: 10 },
+        },
+        subtitle: {
+          display: true,
+          align: "center",
+          font: { size: 12, family: "'Poppins', sans-serif", style: "italic" },
+          color: "#666",
+          padding: { bottom: 15 },
         },
         annotation: {
           annotations: {
             hireDate: {
               type: "line",
-              xMin: 6.5, // Between Aug and Sep
-              xMax: 6.5,
-              borderColor: "#ef4444",
-              borderWidth: 2,
+              xMin: 2,
+              xMax: 2,
+              borderColor: "#ef4444ab",
+              borderWidth: 0,
               borderDash: [6, 6],
+              drawTime: "beforeDatasetsDraw",
               label: {
                 display: true,
-                content: "Hire Date",
+                content: "Hired Q3 2025",
                 position: "end",
                 backgroundColor: "#ef4444",
                 color: "#fff",
@@ -218,7 +196,7 @@ class WebsiteManager {
                   family: "'Poppins', sans-serif",
                 },
                 padding: 5,
-                yAdjust: 10,
+                yAdjust: 8,
               },
             },
           },
@@ -229,12 +207,17 @@ class WebsiteManager {
         y: {
           beginAtZero: true,
           grid: { color: "rgba(0, 0, 0, 0.05)" },
-          grace: "50%",
+          grace: "60%",
           ticks: { font: { family: "'Poppins', sans-serif" } },
         },
         x: {
           grid: { display: false },
-          ticks: { font: { family: "'Poppins', sans-serif" } },
+          ticks: {
+            font: { family: "'Poppins', sans-serif" },
+            align: "center",
+            padding: 1,
+          },
+          offset: true,
         },
       },
     };
@@ -242,23 +225,33 @@ class WebsiteManager {
 
   // Private method to create individual charts
   #createChart(config, labels, defaults) {
-    const { element, type, title, data, hireDateIndex } = config;
+    const { element, type, title, subTitle, data, hireDateIndex } = config;
 
     const dataset =
       type === "bar"
         ? this.#createBarDataset(data, hireDateIndex)
         : this.#createLineDataset(data, hireDateIndex);
 
+    const options = {
+      ...defaults,
+      plugins: {
+        ...defaults.plugins,
+        title: { ...defaults.plugins.title, text: title },
+      },
+    };
+
+    // Add subtitle if provided
+    if (subTitle) {
+      options.plugins.subtitle = {
+        ...defaults.plugins.subtitle,
+        text: subTitle,
+      };
+    }
+
     return new Chart(element, {
       type,
       data: { labels, datasets: [dataset] },
-      options: {
-        ...defaults,
-        plugins: {
-          ...defaults.plugins,
-          title: { ...defaults.plugins.title, text: title },
-        },
-      },
+      options,
     });
   }
 
@@ -301,7 +294,6 @@ class WebsiteManager {
 
   // Private helper for segment colors with gradient
   #getSegmentColor(ctx, hireDateIndex, beforeColor, afterColor) {
-    // Gradient between July (index 6) and August (index 7)
     if (
       ctx.p0DataIndex === hireDateIndex - 1 &&
       ctx.p1DataIndex === hireDateIndex
@@ -322,6 +314,82 @@ class WebsiteManager {
       return gradient;
     }
     return ctx.p0DataIndex < hireDateIndex ? beforeColor : afterColor;
+  }
+
+  // Private method to initialize charts from data
+  #initializeChartsFromData(chartGroups) {
+    if (!this.elements.resultsContainer || !Array.isArray(chartGroups)) return;
+
+    const labels = ["Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"];
+    const chartDefaults = this.#getChartDefaults();
+
+    this.elements.resultsContainer.innerHTML = "";
+
+    chartGroups.forEach((group) => {
+      const groupElement = this.#createChartGroup(group, labels, chartDefaults);
+      this.elements.resultsContainer.appendChild(groupElement);
+    });
+  }
+
+  // Private method to create chart group
+  #createChartGroup(group, labels, chartDefaults) {
+    const groupWrapper = document.createElement("div");
+    groupWrapper.className = "chart-group";
+    groupWrapper.id = group.id;
+
+    if (group.title || group.description) {
+      const header = document.createElement("div");
+      header.className = "section-header";
+
+      if (group.title) {
+        const title = document.createElement("h3");
+        title.className = "section-header__title";
+        title.textContent = group.title;
+        header.appendChild(title);
+      }
+
+      if (group.description) {
+        const description = document.createElement("p");
+        description.className = "section-header__description";
+        description.textContent = group.description;
+        header.appendChild(description);
+      }
+
+      groupWrapper.appendChild(header);
+    }
+
+    const chartsGrid = document.createElement("div");
+    chartsGrid.className = "charts-grid";
+
+    group.charts.forEach((chartConfig) => {
+      const chartWrapper = document.createElement("div");
+      chartWrapper.className = "chart-wrapper";
+
+      const canvas = document.createElement("canvas");
+      canvas.id = `${group.id}-${chartConfig.id}`;
+
+      chartWrapper.appendChild(canvas);
+      chartsGrid.appendChild(chartWrapper);
+
+      // Create chart after canvas is in DOM
+      setTimeout(() => {
+        this.charts[`${group.id}-${chartConfig.id}`] = this.#createChart(
+          {
+            element: canvas,
+            type: chartConfig.type,
+            title: chartConfig.title,
+            subTitle: chartConfig.subTitle,
+            data: chartConfig.data,
+            hireDateIndex: chartConfig.hireDateIndex,
+          },
+          labels,
+          chartDefaults
+        );
+      }, 0);
+    });
+
+    groupWrapper.appendChild(chartsGrid);
+    return groupWrapper;
   }
 
   // Public method to show modal
@@ -395,66 +463,45 @@ class WebsiteManager {
         throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      const sections = this.#categorizeItems(data.items);
 
-      this.#renderSection(
-        sections[SECTIONS.SELECTED_WORKS],
-        this.elements.selectedWorksGrid
-      );
-      this.#renderSection(
-        sections[SECTIONS.RECENT_WORKS],
-        this.elements.recentWorksGrid
-      );
-      this.#renderSection(
-        sections[SECTIONS.SOCIAL_MEDIA],
-        this.elements.socialGrid
-      );
-      this.#renderSection(
-        sections[SECTIONS.CLIENT_BLOGS],
-        this.elements.clientBlogsGrid
-      );
-      this.#renderRedesignSection(
-        sections[SECTIONS.SITE_REDESIGNS],
-        this.elements.redesignGrid
-      );
+      // Render social media section
+      if (data.socialMedia) {
+        this.socialMediaItems = data.socialMedia;
+        const initialSocialItems = this.socialMediaItems.filter(
+          (item) => item.mediaType === this.currentMediaFilter
+        );
+        this.#renderSection(initialSocialItems, this.elements.socialGrid);
+      }
+
+      // Render articles section
+      if (data.articles) {
+        this.#renderSection(data.articles, this.elements.clientBlogsGrid);
+      }
+
+      // Render site redesigns section
+      if (data.siteRedesigns) {
+        this.#renderRedesignSection(
+          data.siteRedesigns,
+          this.elements.redesignGrid
+        );
+      }
+
+      // Initialize charts from data
+      if (data.chartGroups) {
+        this.#initializeChartsFromData(data.chartGroups);
+      }
     } catch (error) {
       console.error("Error loading content:", error);
     }
-  }
-
-  // Private method to categorize items by section
-  #categorizeItems(items) {
-    return items.reduce(
-      (acc, item) => {
-        if (acc[item.section]) {
-          acc[item.section].push(item);
-        }
-        return acc;
-      },
-      {
-        [SECTIONS.SELECTED_WORKS]: [],
-        [SECTIONS.RECENT_WORKS]: [],
-        [SECTIONS.SOCIAL_MEDIA]: [],
-        [SECTIONS.CLIENT_BLOGS]: [],
-        [SECTIONS.SITE_REDESIGNS]: [],
-      }
-    );
   }
 
   // Private method to render a section
   #renderSection(items, container) {
     if (!container || !Array.isArray(items)) return;
 
-    const section = container.closest("section");
-    const isEmpty = items.length === 0;
-
-    if (isEmpty) {
-      this.#hideSection(section);
-      return;
-    }
-
-    section.style.display = "";
     container.innerHTML = "";
+
+    if (items.length === 0) return;
 
     const fragment = document.createDocumentFragment();
     items.forEach((item) => {
@@ -467,16 +514,9 @@ class WebsiteManager {
   #renderRedesignSection(items, container) {
     if (!container || !Array.isArray(items)) return;
 
-    const section = container.closest("section");
-    const isEmpty = items.length === 0;
-
-    if (isEmpty) {
-      this.#hideSection(section);
-      return;
-    }
-
-    section.style.display = "";
     container.innerHTML = "";
+
+    if (items.length === 0) return;
 
     const fragment = document.createDocumentFragment();
     items.forEach((item, index) => {
@@ -492,16 +532,16 @@ class WebsiteManager {
 
     if (item.title || item.description) {
       const info = document.createElement("div");
-      info.className = "redesign-info";
+      info.className = "section-header";
       if (item.title) {
         const title = document.createElement("h3");
-        title.className = "redesign-title";
+        title.className = "section-header__title";
         title.textContent = item.title;
         info.appendChild(title);
       }
       if (item.description) {
         const desc = document.createElement("p");
-        desc.className = "redesign-description";
+        desc.className = "section-header__description";
         desc.textContent = item.description;
         info.appendChild(desc);
       }
@@ -513,7 +553,7 @@ class WebsiteManager {
 
     const slider = document.createElement("img-comparison-slider");
     slider.className = "comparison-slider";
-    slider.value = 50; // start centered
+    slider.value = 50;
 
     const beforeDiv = document.createElement("div");
     beforeDiv.slot = "first";
@@ -533,7 +573,6 @@ class WebsiteManager {
     afterImg.loading = "lazy";
     afterDiv.appendChild(afterImg);
 
-    // Create custom handle SVG
     const handleSvg = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "svg"
@@ -543,7 +582,6 @@ class WebsiteManager {
     handleSvg.setAttribute("viewBox", "-8 -3 16 6");
     handleSvg.classList.add("custom-animated-handle");
 
-    // Create outline path (darker, thicker)
     const outlinePath = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
@@ -557,7 +595,6 @@ class WebsiteManager {
     outlinePath.setAttribute("fill", "none");
     outlinePath.setAttribute("vector-effect", "non-scaling-stroke");
 
-    // Create main path (white, on top)
     const handlePath = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
@@ -571,12 +608,12 @@ class WebsiteManager {
     handlePath.setAttribute("fill", "#fff");
     handlePath.setAttribute("vector-effect", "non-scaling-stroke");
 
-    handleSvg.appendChild(outlinePath); // Add outline first
-    handleSvg.appendChild(handlePath); // Add white path on top
+    handleSvg.appendChild(outlinePath);
+    handleSvg.appendChild(handlePath);
 
     slider.appendChild(beforeDiv);
     slider.appendChild(afterDiv);
-    slider.appendChild(handleSvg); // Add the custom handle
+    slider.appendChild(handleSvg);
 
     const beforeLabel = document.createElement("div");
     beforeLabel.className = "comparison-label comparison-label--before";
@@ -592,9 +629,8 @@ class WebsiteManager {
 
     wrapper.appendChild(sliderWrapper);
 
-    // ✅ REAL visibility logic
     const updateLabels = () => {
-      const value = slider.value; // 0–100
+      const value = slider.value;
       beforeLabel.style.opacity = value > 15 ? "1" : "0";
       afterLabel.style.opacity = value < 85 ? "1" : "0";
     };
@@ -603,17 +639,6 @@ class WebsiteManager {
     slider.addEventListener("change", updateLabels);
 
     return wrapper;
-  }
-
-  // Private method to hide empty sections
-  #hideSection(section) {
-    if (!section) return;
-
-    section.style.display = "none";
-    const navLink = this.elements.navList?.querySelector(
-      `a[href="#${section.id}"]`
-    );
-    if (navLink) navLink.style.display = "none";
   }
 
   // Private method to create item elements
@@ -635,14 +660,25 @@ class WebsiteManager {
     const card = document.createElement("div");
     card.className = "card card--image-only";
 
-    const image = document.createElement("img");
-    image.src = item.image;
-    image.alt = item.description || "Image";
-    image.loading = "lazy";
-    image.className = "card__image";
-
-    card.addEventListener("click", () => this.showModal(item.image));
-    card.appendChild(image);
+    if (item.mediaType === "video") {
+      const video = document.createElement("video");
+      video.src = item.media;
+      video.alt = item.description || "Video";
+      video.loading = "lazy";
+      video.className = "card__image";
+      video.controls = true;
+      video.muted = true;
+      video.playsInline = true;
+      card.appendChild(video);
+    } else {
+      const image = document.createElement("img");
+      image.src = item.media;
+      image.alt = item.description || "Image";
+      image.loading = "lazy";
+      image.className = "card__image";
+      card.addEventListener("click", () => this.showModal(item.media));
+      card.appendChild(image);
+    }
 
     return card;
   }
@@ -655,15 +691,15 @@ class WebsiteManager {
     if (item.link) {
       card.href = item.link;
       card.target = "_blank";
-      card.rel = "noopener noreferrer"; // Security best practice
+      card.rel = "noopener noreferrer";
     } else {
       card.style.cursor = "default";
       card.onclick = (e) => e.preventDefault();
     }
 
-    if (item.image) {
+    if (item.media) {
       const image = document.createElement("img");
-      image.src = item.image;
+      image.src = item.media;
       image.alt = item.title || "Card image";
       image.loading = "lazy";
       image.className = "card__image";
@@ -721,15 +757,8 @@ class WebsiteManager {
 
   // Private method to update layout for device
   #updateLayoutForCurrentDevice() {
-    const grid = this.elements.selectedWorksGrid;
-    if (!grid) return;
-
-    const isMobile = window.innerWidth <= BREAKPOINT_MOBILE;
-    const cards = grid.children;
-
-    Array.from(cards).forEach((card) => {
-      card.classList.toggle("card--horizontal", !isMobile);
-    });
+    // No longer needed for selected works, but kept for potential future use
+    return;
   }
 
   // Private method to check background image load
