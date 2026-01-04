@@ -43,6 +43,78 @@
   ],
   "socialMedia": [
     {
+      "media": "./assets/media/images/Irrigation Maintenance Services Email Campaign.png",
+      "mediaType": "image",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/images/Landscape Install Email Campaign.png",
+      "mediaType": "image",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/images/Lawn Care FB Graphic.png",
+      "mediaType": "image",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/images/Paradise L&I 3D Landscape Design November Graphic.png",
+      "mediaType": "image",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/images/Paradise L&I Post-Pool Construction Graphic November.png",
+      "mediaType": "image",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/images/Sprinkler RepairIrrigation Services Email Campaign 08182025.png",
+      "mediaType": "image",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/images/Storm Water Drainage Email Campaign October.png",
+      "mediaType": "image",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/images/Water Features Email Campaign.png",
+      "mediaType": "image",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
       "media": "./imgs/social-media/SocialMedia1.png",
       "mediaType": "image",
       "title": null,
