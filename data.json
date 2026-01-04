@@ -257,6 +257,42 @@
       "link": null,
       "tags": null,
       "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/videos/3D Landscape Design Reel.mp4",
+      "mediaType": "video",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/videos/Landscape Maintenance Reel.mp4",
+      "mediaType": "video",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/videos/Outdoor Living Project Before Winter Reel.mp4",
+      "mediaType": "video",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
+    },
+    {
+      "media": "./assets/media/videos/Outdoor Living Reel.mp4",
+      "mediaType": "video",
+      "title": null,
+      "description": null,
+      "link": null,
+      "tags": null,
+      "displayType": "image-only"
     }
   ],
   "articles": [
