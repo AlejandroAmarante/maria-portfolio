@@ -62,6 +62,7 @@ class WebsiteManager {
     this.loadContent();
     this.#checkBackgroundImageLoaded();
     this.#updateLayoutForCurrentDevice();
+    this.#updateActiveNavLink(); // Set initial active state
   }
 
   // Private method for event listeners
@@ -123,31 +124,38 @@ class WebsiteManager {
   }
 
   // Private method to handle media filter
+  // Private method to handle media filter
   #handleMediaFilter(e) {
-    const filterType = e.target.dataset.filter;
-    if (filterType === this.currentMediaFilter) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const button = e.currentTarget;
+    const filterType = button.dataset.filter;
+
+    if (!filterType || filterType === this.currentMediaFilter) return;
 
     this.currentMediaFilter = filterType;
 
-    // Update button states
+    // Update button states immediately
     this.elements.mediaFilterButtons.forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.filter === filterType);
     });
 
-    // Fade out, update content, fade in
     const grid = this.elements.socialGrid;
-    grid.classList.add("fade-out");
+
+    // Filter and render immediately - no complex animations
+    const filteredItems = this.socialMediaItems.filter(
+      (item) => item.mediaType === filterType
+    );
+
+    // Simple fade effect using opacity
+    grid.style.transition = "opacity 0.2s ease";
+    grid.style.opacity = "0";
 
     setTimeout(() => {
-      const filteredItems = this.socialMediaItems.filter(
-        (item) => item.mediaType === filterType
-      );
       this.#renderSection(filteredItems, grid);
-      grid.classList.remove("fade-out");
-      grid.classList.add("fade-in");
-
-      setTimeout(() => grid.classList.remove("fade-in"), 300);
-    }, 300);
+      grid.style.opacity = "1";
+    }, 200);
   }
 
   // Private method to get chart defaults
