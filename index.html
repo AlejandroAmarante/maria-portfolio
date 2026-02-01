@@ -19,30 +19,42 @@
 </head>
 
 <body>
-    <div class="main-container">
-        <!-- Navigation -->
-        <nav class="sidebar-nav">
-            <h1 class="site-title">Maria <br>Hernandez</h1>
-            <div class="menu-toggle">
-                <img src="./imgs/menu-line.svg" alt="Hamburger Menu" class="menu-toggle__icon" width="36">
-                <img src="./imgs/close-line.svg" alt="Close Menu" class="menu-toggle__icon--close" width="36">
-            </div>
-            <ul class="nav-list">
-                <a href="#about" class="nav-list__link">About Me</a>
-                <!-- <a href="#selected-works" class="nav-list__link">Selected Works</a>
-                <a href="#recent-works" class="nav-list__link">Recent Works</a> -->
-                <a href="#results" class="nav-list__link">Impact</a>
-                <a href="#site-redesigns" class="nav-list__link">Site Redesigns</a>
-                <a href="#social-showcase" class="nav-list__link">Social Posts</a>
-                <a href="#client-blogs" class="nav-list__link">Client Articles</a>
+    <!-- Hamburger Menu Toggle Button -->
+    <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg class="menu-toggle__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 4H21V6H3V4ZM3 11H21V13H3V11ZM3 18H21V20H3V18Z"></path>
+        </svg>
+        <svg class="menu-toggle__icon--close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+            fill="currentColor">
+            <path
+                d="M12 10.586L16.95 5.63599L18.364 7.04999L13.414 12L18.364 16.95L16.95 18.364L12 13.414L7.04999 18.364L5.63599 16.95L10.586 12L5.63599 7.04999L7.04999 5.63599L12 10.586Z">
+            </path>
+        </svg>
+    </button>
+
+    <!-- Mobile Overlay -->
+    <div class="nav-overlay"></div>
+
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar-nav">
+        <h1 class="site-title">Maria <br>Hernandez</h1>
+        <ul class="nav-list">
+            <li><a href="#about" class="nav-list__link">About Me</a></li>
+            <li><a href="#results" class="nav-list__link">Impact</a></li>
+            <li><a href="#site-redesigns" class="nav-list__link">Site Redesigns</a></li>
+            <li><a href="#social-showcase" class="nav-list__link">Social Posts</a></li>
+            <li><a href="#client-blogs" class="nav-list__link">Client Articles</a></li>
+            <li>
                 <a href="https://www.linkedin.com/in/maria-del-hernandez/" target="_blank"
                     class="nav-list__link nav-list__link--button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                        <path fill="#ffffff"
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill="currentColor"
                             d="M444.17 32H70.28C49.85 32 32 46.7 32 66.89v374.72C32 461.91 49.85 480 70.28 480h373.78c20.54 0 35.94-18.21 35.94-38.39V66.89C480.12 46.7 464.6 32 444.17 32zm-273.3 373.43h-64.18V205.88h64.18zM141 175.54h-.46c-20.54 0-33.84-15.29-33.84-34.43 0-19.49 13.65-34.42 34.65-34.42s33.85 14.82 34.31 34.42c-.01 19.14-13.31 34.43-34.66 34.43zm264.43 229.89h-64.18V296.32c0-26.14-9.34-44-32.56-44-17.74 0-28.24 12-32.91 23.69-1.75 4.2-2.22 9.92-2.22 15.76v113.66h-64.18V205.88h64.18v27.77c9.34-13.3 23.93-32.44 57.88-32.44 42.13 0 74 27.77 74 87.64z" />
                     </svg>
                     LinkedIn
                 </a>
+            </li>
+            <li>
                 <a href="./assets/pdfs/Hernandez, Maria Resume.pdf" target="_blank"
                     class="nav-list__link nav-list__link--button">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -52,9 +64,11 @@
                     </svg>
                     Resume
                 </a>
-            </ul>
-        </nav>
+            </li>
+        </ul>
+    </nav>
 
+    <div class="main-container">
         <!-- Loading Animation -->
         <div class="loading-screen">
             <object type="image/svg+xml" data="./imgs/loading-ring.svg"></object>
@@ -64,7 +78,8 @@
         <section id="about" class="section section--centered section--with-background">
             <div class="section__content">
                 <div class="about-info">
-                    <h1 class="about-info__heading--mobile hidden">Storyteller, SEO Specialist, and Editing Aficionado
+                    <h1 class="about-info__heading--mobile">Marketing Strategist, SEO Specialist, and Editing
+                        Aficionado
                     </h1>
                     <div class="about-info__image-wrapper">
                         <img src="./imgs/maria-amarante.jpg" alt="Maria Amarante" class="about-info__image">
@@ -97,31 +112,15 @@
             </div>
         </section>
 
-        <!-- Selected Works Section -->
-        <!-- <section id="selected-works" class="works-section">
-            <h1 class="section__title">Selected Works</h1>
-            <div class="works-grid works-grid--selected"></div>
-        </section> -->
-
-        <!-- Recent Works Section -->
-        <!-- <section id="recent-works" class="works-section">
-            <h1 class="section__title">Recent Works</h1>
-            <div class="works-grid"></div>
-        </section> -->
-
         <!-- Results Section -->
         <section id="results" class="works-section">
             <h1 class="section__title">Impact</h1>
-
-            <div class="results-container">
-
-            </div>
+            <div class="results-container"></div>
         </section>
 
         <!-- Site Redesigns Section -->
         <section id="site-redesigns" class="works-section">
             <h1 class="section__title">Site Redesigns</h1>
-
             <div class="works-grid redesign-grid">
                 <!-- Redesign items will be loaded here by JavaScript -->
             </div>
@@ -130,20 +129,21 @@
         <!-- Social Media Showcase Section -->
         <section id="social-showcase" class="works-section social-showcase">
             <h1 class="section__title">Social Posts</h1>
-            <!-- Add these buttons -->
             <div class="media-filter-buttons">
-                <button class="media-filter-btn active" data-filter="image"><svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24" fill="currentColor">
+                <button class="media-filter-btn active" data-filter="image">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M6 4C6 3.44772 6.44772 3 7 3H21C21.5523 3 22 3.44772 22 4V16C22 16.5523 21.5523 17 21 17H18V20C18 20.5523 17.5523 21 17 21H3C2.44772 21 2 20.5523 2 20V8C2 7.44772 2.44772 7 3 7H6V4ZM8 7H17C17.5523 7 18 7.44772 18 8V15H20V5H8V7ZM16 15.7394V9H4V18.6321L11.4911 11.6404L16 15.7394ZM7 13.5C7.82843 13.5 8.5 12.8284 8.5 12C8.5 11.1716 7.82843 10.5 7 10.5C6.17157 10.5 5.5 11.1716 5.5 12C5.5 12.8284 6.17157 13.5 7 13.5Z">
                         </path>
-                    </svg>Images</button>
-                <button class="media-filter-btn" data-filter="video"><svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24" fill="currentColor">
+                    </svg>Images
+                </button>
+                <button class="media-filter-btn" data-filter="video">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM4 5V19H20V5H4ZM10.6219 8.41459L15.5008 11.6672C15.6846 11.7897 15.7343 12.0381 15.6117 12.2219C15.5824 12.2658 15.5447 12.3035 15.5008 12.3328L10.6219 15.5854C10.4381 15.708 10.1897 15.6583 10.0672 15.4745C10.0234 15.4088 10 15.3316 10 15.2526V8.74741C10 8.52649 10.1791 8.34741 10.4 8.34741C10.479 8.34741 10.5562 8.37078 10.6219 8.41459Z">
                         </path>
-                    </svg>Videos</button>
+                    </svg>Videos
+                </button>
             </div>
             <div class="works-grid"></div>
         </section>
@@ -163,10 +163,9 @@
                 Maria Hernandez. All rights reserved.
             </p>
         </footer>
-
-        <script src="script.js"></script>
     </div>
 
+    <script src="script.js"></script>
 </body>
 
 </html>

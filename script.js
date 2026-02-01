@@ -27,6 +27,7 @@ class WebsiteManager {
       menuToggle: document.querySelector(".menu-toggle"),
       navList: document.querySelector(".nav-list"),
       sidebar: document.querySelector(".sidebar-nav"),
+      navOverlay: document.querySelector(".nav-overlay"),
       clientBlogsGrid: document.querySelector("#client-blogs .works-grid"),
       socialGrid: document.querySelector("#social-showcase .works-grid"),
       mediaFilterButtons: document.querySelectorAll(".media-filter-btn"),
@@ -61,24 +62,25 @@ class WebsiteManager {
     this.#setupEventListeners();
     this.loadContent();
     this.#checkBackgroundImageLoaded();
-    this.#updateLayoutForCurrentDevice();
-    this.#updateActiveNavLink(); // Set initial active state
+    this.#updateActiveNavLink();
   }
 
   // Private method for event listeners
   #setupEventListeners() {
-    // Navigation toggle
+    // Mobile navigation toggle
     this.elements.menuToggle?.addEventListener("click", () =>
-      this.#toggleNavigation()
+      this.#toggleMobileNav(),
     );
 
-    // Navigation link clicks
+    // Close nav when clicking overlay
+    this.elements.navOverlay?.addEventListener("click", () =>
+      this.#closeMobileNav(),
+    );
+
+    // Navigation link clicks - close mobile nav
     this.elements.navList?.addEventListener("click", (e) => {
-      if (
-        e.target.tagName === "A" &&
-        this.elements.navList.classList.contains("show")
-      ) {
-        this.#toggleNavigation();
+      if (e.target.tagName === "A") {
+        this.#closeMobileNav();
       }
     });
 
@@ -95,17 +97,19 @@ class WebsiteManager {
           scrollTimeout = null;
         }, 16); // ~60fps
       },
-      { passive: true }
+      { passive: true },
     );
 
     // Resize events (debounced for performance)
     let resizeTimeout;
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(
-        () => this.#updateLayoutForCurrentDevice(),
-        150
-      );
+      resizeTimeout = setTimeout(() => {
+        // Close mobile nav if window is resized to desktop size
+        if (window.innerWidth > BREAKPOINT_MOBILE) {
+          this.#closeMobileNav();
+        }
+      }, 150);
     });
 
     // Modal events
@@ -114,7 +118,12 @@ class WebsiteManager {
       if (e.target === this.modal.element) this.#closeModal();
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") this.#closeModal();
+      if (e.key === "Escape") {
+        this.#closeModal();
+        if (window.innerWidth <= BREAKPOINT_MOBILE) {
+          this.#closeMobileNav();
+        }
+      }
     });
 
     // Media filter buttons
@@ -123,7 +132,43 @@ class WebsiteManager {
     });
   }
 
-  // Private method to handle media filter
+  // Private method to toggle mobile navigation
+  #toggleMobileNav() {
+    const { sidebar, menuToggle, navOverlay } = this.elements;
+
+    const isOpen = sidebar.classList.contains("active");
+
+    if (isOpen) {
+      this.#closeMobileNav();
+    } else {
+      this.#openMobileNav();
+    }
+  }
+
+  // Private method to open mobile navigation
+  #openMobileNav() {
+    const { sidebar, menuToggle, navOverlay } = this.elements;
+
+    sidebar.classList.add("active");
+    menuToggle.classList.add("active");
+    navOverlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+
+    menuToggle.setAttribute("aria-expanded", "true");
+  }
+
+  // Private method to close mobile navigation
+  #closeMobileNav() {
+    const { sidebar, menuToggle, navOverlay } = this.elements;
+
+    sidebar.classList.remove("active");
+    menuToggle.classList.remove("active");
+    navOverlay.classList.remove("active");
+    document.body.style.overflow = "";
+
+    menuToggle.setAttribute("aria-expanded", "false");
+  }
+
   // Private method to handle media filter
   #handleMediaFilter(e) {
     e.preventDefault();
@@ -136,19 +181,19 @@ class WebsiteManager {
 
     this.currentMediaFilter = filterType;
 
-    // Update button states immediately
+    // Update button states
     this.elements.mediaFilterButtons.forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.filter === filterType);
     });
 
     const grid = this.elements.socialGrid;
 
-    // Filter and render immediately - no complex animations
+    // Filter and render
     const filteredItems = this.socialMediaItems.filter(
-      (item) => item.mediaType === filterType
+      (item) => item.mediaType === filterType,
     );
 
-    // Simple fade effect using opacity
+    // Simple fade effect
     grid.style.transition = "opacity 0.2s ease";
     grid.style.opacity = "0";
 
@@ -315,7 +360,7 @@ class WebsiteManager {
         meta[hireDateIndex - 1].x,
         0,
         meta[hireDateIndex].x,
-        0
+        0,
       );
       gradient.addColorStop(0, beforeColor);
       gradient.addColorStop(1, afterColor);
@@ -391,7 +436,7 @@ class WebsiteManager {
             hireDateIndex: chartConfig.hireDateIndex,
           },
           labels,
-          chartDefaults
+          chartDefaults,
         );
       }, 0);
     });
@@ -413,21 +458,11 @@ class WebsiteManager {
     document.body.style.overflow = "";
   }
 
-  // Private method to toggle navigation
-  #toggleNavigation() {
-    const { navList, menuToggle, sidebar } = this.elements;
-    if (!navList || !menuToggle || !sidebar) return;
-
-    navList.classList.toggle("show");
-    menuToggle.classList.toggle("active");
-    sidebar.classList.toggle("show");
-  }
-
   // Private method for navbar scroll effect
   #handleNavbarScroll() {
     this.elements.sidebar?.classList.toggle(
       "navbar-scroll",
-      window.scrollY > NAVBAR_SCROLL_THRESHOLD
+      window.scrollY > NAVBAR_SCROLL_THRESHOLD,
     );
   }
 
@@ -457,7 +492,7 @@ class WebsiteManager {
       navLinks.forEach((link) => {
         link.classList.toggle(
           "active",
-          link.getAttribute("href")?.endsWith(`#${activeSection}`)
+          link.getAttribute("href")?.endsWith(`#${activeSection}`),
         );
       });
     }
@@ -476,7 +511,7 @@ class WebsiteManager {
       if (data.socialMedia) {
         this.socialMediaItems = data.socialMedia;
         const initialSocialItems = this.socialMediaItems.filter(
-          (item) => item.mediaType === this.currentMediaFilter
+          (item) => item.mediaType === this.currentMediaFilter,
         );
         this.#renderSection(initialSocialItems, this.elements.socialGrid);
       }
@@ -490,7 +525,7 @@ class WebsiteManager {
       if (data.siteRedesigns) {
         this.#renderRedesignSection(
           data.siteRedesigns,
-          this.elements.redesignGrid
+          this.elements.redesignGrid,
         );
       }
 
@@ -583,7 +618,7 @@ class WebsiteManager {
 
     const handleSvg = document.createElementNS(
       "http://www.w3.org/2000/svg",
-      "svg"
+      "svg",
     );
     handleSvg.setAttribute("slot", "handle");
     handleSvg.setAttribute("width", "100");
@@ -592,12 +627,12 @@ class WebsiteManager {
 
     const outlinePath = document.createElementNS(
       "http://www.w3.org/2000/svg",
-      "path"
+      "path",
     );
     outlinePath.setAttribute("stroke", "#00000070");
     outlinePath.setAttribute(
       "d",
-      "M -5 -2 L -7 0 L -5 2 M -5 -2 L -5 2 M 5 -2 L 7 0 L 5 2 M 5 -2 L 5 2"
+      "M -5 -2 L -7 0 L -5 2 M -5 -2 L -5 2 M 5 -2 L 7 0 L 5 2 M 5 -2 L 5 2",
     );
     outlinePath.setAttribute("stroke-width", "2.5");
     outlinePath.setAttribute("fill", "none");
@@ -605,12 +640,12 @@ class WebsiteManager {
 
     const handlePath = document.createElementNS(
       "http://www.w3.org/2000/svg",
-      "path"
+      "path",
     );
     handlePath.setAttribute("stroke", "#fff");
     handlePath.setAttribute(
       "d",
-      "M -5 -2 L -7 0 L -5 2 M -5 -2 L -5 2 M 5 -2 L 7 0 L 5 2 M 5 -2 L 5 2"
+      "M -5 -2 L -7 0 L -5 2 M -5 -2 L -5 2 M 5 -2 L 7 0 L 5 2 M 5 -2 L 5 2",
     );
     handlePath.setAttribute("stroke-width", "1");
     handlePath.setAttribute("fill", "#fff");
@@ -621,7 +656,7 @@ class WebsiteManager {
 
     slider.appendChild(beforeDiv);
     slider.appendChild(afterDiv);
-    slider.appendChild(handleSvg);
+    // slider.appendChild(handleSvg);
 
     const beforeLabel = document.createElement("div");
     beforeLabel.className = "comparison-label comparison-label--before";
@@ -747,15 +782,36 @@ class WebsiteManager {
   }
 
   // Private method to create tag list
+  // Private method to create tag list
   #createTagList(tags) {
     const tagList = document.createElement("div");
     tagList.className = "tag-list";
+
+    const tagIcons = {
+      photography:
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14.4336 3C15.136 3 15.7869 3.36852 16.1484 3.9707L16.9209 5.25684C17.0113 5.40744 17.174 5.5 17.3496 5.5H19C20.6569 5.5 22 6.84315 22 8.5V18C22 19.6569 20.6569 21 19 21H5C3.34315 21 2 19.6569 2 18V8.5C2 6.84315 3.34315 5.5 5 5.5H6.65039C6.82602 5.5 6.98874 5.40744 7.0791 5.25684L7.85156 3.9707C8.21306 3.36852 8.86403 3 9.56641 3H14.4336ZM8.79492 6.28613C8.34311 7.03915 7.52855 7.5 6.65039 7.5H5C4.44772 7.5 4 7.94772 4 8.5V18C4 18.5523 4.44772 19 5 19H19C19.5523 19 20 18.5523 20 18V8.5C20 7.94772 19.5523 7.5 19 7.5H17.3496C16.4715 7.5 15.6569 7.03915 15.2051 6.28613L14.4336 5H9.56641L8.79492 6.28613ZM12 8.5C14.4853 8.5 16.5 10.5147 16.5 13C16.5 15.4853 14.4853 17.5 12 17.5C9.51472 17.5 7.5 15.4853 7.5 13C7.5 10.5147 9.51472 8.5 12 8.5ZM12 10.5C10.6193 10.5 9.5 11.6193 9.5 13C9.5 14.3807 10.6193 15.5 12 15.5C13.3807 15.5 14.5 14.3807 14.5 13C14.5 11.6193 13.3807 10.5 12 10.5Z"></path></svg>',
+      seo: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 3C4.13401 3 1 6.13401 1 10C1 13.866 4.13401 17 8 17H9.07089C9.02417 16.6734 9 16.3395 9 16C9 15.6605 9.02417 15.3266 9.07089 15H8C5.23858 15 3 12.7614 3 10C3 7.23858 5.23858 5 8 5H16C18.7614 5 21 7.23858 21 10C21 10.3428 20.9655 10.6775 20.8998 11.0008C21.4853 11.5748 21.9704 12.2508 22.3264 13C22.7583 12.0907 23 11.0736 23 10C23 6.13401 19.866 3 16 3H8ZM16 13C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13ZM11 16C11 13.2386 13.2386 11 16 11C18.7614 11 21 13.2386 21 16C21 17.0191 20.6951 17.967 20.1716 18.7574L22.7071 21.2929L21.2929 22.7071L18.7574 20.1716C17.967 20.6951 17.0191 21 16 21C13.2386 21 11 18.7614 11 16Z"></path></svg>',
+      writing:
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.93912 14.0328C6.7072 14.6563 6.51032 15.2331 6.33421 15.8155C7.29345 15.1189 8.43544 14.6767 9.75193 14.5121C12.2652 14.198 14.4976 12.5385 15.6279 10.4537L14.1721 8.99888L15.5848 7.58417C15.9185 7.25004 16.2521 6.91614 16.5858 6.58248C17.0151 6.15312 17.5 5.35849 18.0129 4.2149C12.4197 5.08182 8.99484 8.50647 6.93912 14.0328ZM17 8.99739L18 9.99669C17 12.9967 14 15.9967 10 16.4967C7.33146 16.8303 5.66421 18.6636 4.99824 21.9967H3C4 15.9967 6 1.99669 21 1.99669C20.0009 4.99402 19.0018 6.99313 18.0027 7.99402C17.6662 8.33049 17.3331 8.66382 17 8.99739Z"></path></svg>',
+      editing:
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg>',
+    };
 
     const fragment = document.createDocumentFragment();
     tags.forEach((tagText) => {
       const tag = document.createElement("div");
       tag.className = "tag";
-      tag.textContent = tagText;
+
+      // Get icon based on tag text (case-insensitive match)
+      const tagKey = tagText.toLowerCase();
+      const icon = tagIcons[tagKey] || "";
+
+      if (icon) {
+        tag.innerHTML = icon + tagText;
+      } else {
+        tag.textContent = tagText;
+      }
+
       fragment.appendChild(tag);
     });
 
@@ -763,18 +819,12 @@ class WebsiteManager {
     return tagList;
   }
 
-  // Private method to update layout for device
-  #updateLayoutForCurrentDevice() {
-    // No longer needed for selected works, but kept for potential future use
-    return;
-  }
-
   // Private method to check background image load
   #checkBackgroundImageLoaded() {
     if (!this.elements.aboutSection) return;
 
     const bgImageValue = window.getComputedStyle(
-      this.elements.aboutSection
+      this.elements.aboutSection,
     ).backgroundImage;
 
     if (!bgImageValue || bgImageValue === "none") {
@@ -802,7 +852,7 @@ class WebsiteManager {
         () => {
           loadingScreen.style.display = "none";
         },
-        { once: true }
+        { once: true },
       );
     }, LOADING_ANIMATION_DELAY);
   }
