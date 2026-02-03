@@ -16,7 +16,7 @@
   --color-overlay: rgba(240, 240, 240, 0.5);
   --color-shadow-sm: rgba(0, 0, 0, 0.1);
   --color-shadow-md: rgba(0, 0, 0, 0.15);
-  
+
   /* Spacing System */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
@@ -24,16 +24,17 @@
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
   --spacing-2xl: 5rem;
-  
+
   /* Typography */
-  --font-primary: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-primary:
+    "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-accent: "Windsong", cursive;
   --font-weight-light: 300;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
+
   /* Font Sizes */
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -42,28 +43,29 @@
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 1.75rem;
   --font-size-4xl: 2.5rem;
-  
+
   /* Layout */
   --sidebar-width: 220px;
   --container-max-width: 1400px;
   --content-width: 75%;
-  
+
   /* Border Radius */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-full: 50%;
-  
+
   /* Transitions */
   --transition-fast: 0.15s ease-in-out;
   --transition-base: 0.2s ease-in-out;
   --transition-slow: 0.3s ease-in-out;
-  
+
   /* Shadows */
   --shadow-sm: 0 2px 4px var(--color-shadow-sm);
   --shadow-md: 0 4px 6px var(--color-shadow-sm), 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px var(--color-shadow-md), 0 4px 6px var(--color-shadow-sm);
-  
+  --shadow-lg:
+    0 10px 15px var(--color-shadow-md), 0 4px 6px var(--color-shadow-sm);
+
   /* Z-index Scale */
   --z-base: 1;
   --z-dropdown: 10;
@@ -164,7 +166,9 @@ ul {
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--transition-slow), visibility var(--transition-slow);
+  transition:
+    opacity var(--transition-slow),
+    visibility var(--transition-slow);
   z-index: var(--z-overlay);
   backdrop-filter: blur(2px);
 }
@@ -190,7 +194,9 @@ ul {
   color: var(--color-white);
   z-index: calc(var(--z-nav) + 1);
   cursor: pointer;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   align-items: center;
   justify-content: center;
@@ -336,7 +342,9 @@ ul {
   background-color: var(--color-background);
   z-index: var(--z-loading);
   opacity: 1;
-  transition: transform 1s ease-out, opacity 0.3s ease-out;
+  transition:
+    transform 1s ease-out,
+    opacity 0.3s ease-out;
 }
 
 .loading-screen.hidden {
@@ -560,8 +568,11 @@ ul {
   background: var(--color-white);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
-  padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-md) var(--spacing-sm);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-md)
+    var(--spacing-sm);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .chart-wrapper:hover {
@@ -622,25 +633,35 @@ ul {
   box-shadow: var(--shadow-md);
   cursor: ew-resize;
   outline: none;
-  
+  aspect-ratio: 16 / 9;
+
   --divider-width: 3px;
   --divider-color: #ffffff;
   --default-handle-width: clamp(40px, 5vw, 200px);
   --handle-color: #ffffff;
   --default-handle-opacity: 1;
+  background-color: white !important; /* Add this */
 }
 
 .before-container,
 .after-container {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.before-container img,
-.after-container img {
+.before-container img, 
+.after-container img, 
+.before-container video, 
+.after-container video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .comparison-label {
@@ -706,7 +727,7 @@ ul {
 }
 
 #client-blogs .works-grid {
-  padding: var(--spacing-md);;
+  padding: var(--spacing-md);
 }
 
 /* Media Filter Buttons */
@@ -775,7 +796,9 @@ ul {
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  transition: transform var(--transition-slow), box-shadow var(--transition-slow);
+  transition:
+    transform var(--transition-slow),
+    box-shadow var(--transition-slow);
   cursor: pointer;
 }
 
@@ -914,13 +937,13 @@ ul {
     --font-size-4xl: 2rem;
     --font-size-3xl: 1.5rem;
   }
-  
+
   .chart-wrapper {
     max-width: 450px;
   }
-  
+
   .comparison-slider {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 9; /* Keep consistent */
   }
 }
 
@@ -930,150 +953,150 @@ ul {
     --content-width: 95%;
     --spacing-2xl: 3rem;
   }
-  
+
   /* Layout */
   .main-container {
     margin-left: 0;
   }
-  
+
   /* Show hamburger menu */
   .menu-toggle {
     display: flex;
   }
-  
+
   /* Hide sidebar by default on mobile */
   .sidebar-nav {
     transform: translateX(-100%);
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
   }
-  
+
   /* Show sidebar when active */
   .sidebar-nav.active {
     transform: translateX(0);
   }
-  
+
   /* Sections */
   .section {
     padding: var(--spacing-xl) var(--spacing-sm);
   }
-  
+
   .section--with-background {
     background-position: center bottom;
     background-attachment: scroll;
   }
-  
+
   .section__content {
     width: 95%;
     padding: var(--spacing-md);
   }
-  
+
   .section__title {
     font-size: var(--font-size-3xl);
   }
-  
+
   /* About Section */
   .about-info {
     flex-direction: column;
     gap: var(--spacing-md);
   }
-  
+
   .about-info__image-wrapper {
     width: 16rem;
     height: 16rem;
   }
-  
+
   .about-info__text {
     max-width: 100%;
     width: 100%;
   }
-  
+
   .about-info__heading {
     display: none;
   }
-  
+
   .about-info__heading--mobile {
     display: block;
   }
-  
+
   .about-link {
     align-self: center;
     width: 100%;
     max-width: 300px;
   }
-  
+
   /* Works Sections */
   .works-section {
     padding: var(--spacing-xl) var(--spacing-sm);
   }
-  
+
   .works-grid {
     padding: 0;
   }
-  
+
   .works-grid--selected {
     flex-direction: column;
   }
-  
+
   .works-grid--selected > .card:nth-child(even) {
     flex-direction: column;
   }
-  
+
   /* Cards */
   .card {
     max-width: 100%;
   }
-  
+
   .card--horizontal {
     flex-direction: column;
   }
-  
+
   .card--horizontal .card__image,
   .card--horizontal .card__content {
     width: 100%;
     height: auto;
   }
-  
+
   .card--horizontal .card__image {
     height: 250px;
   }
-  
+
   .card--image-only {
     max-width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
   }
-  
+
   /* Charts */
   .results-container {
     padding: 0;
   }
-  
+
   .charts-grid {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .chart-wrapper {
     max-width: 100%;
     width: 100%;
   }
-  
+
   /* Redesign */
   .redesign-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-xl);
     padding: 0 var(--spacing-sm);
   }
-  
+
   .comparison-slider-wrapper {
     max-width: 100%;
   }
-  
+
   /* Media Filter */
   .media-filter-buttons {
     padding: 0;
   }
-  
+
   .media-filter-btn {
     font-size: var(--font-size-sm);
     padding: 0.625rem var(--spacing-md);
@@ -1088,48 +1111,48 @@ ul {
     --font-size-2xl: 1.25rem;
     --spacing-sm: 0.75rem;
   }
-  
+
   .menu-toggle {
     width: 44px;
     height: 44px;
     top: 0.75rem;
     right: 0.75rem;
   }
-  
+
   .menu-toggle__icon,
   .menu-toggle__icon--close {
     width: 20px;
     height: 20px;
   }
-  
+
   .about-info__image-wrapper {
     width: 14rem;
     height: 14rem;
   }
-  
+
   .modal__close {
     top: 10px;
     right: 15px;
     font-size: 32px;
   }
-  
+
   .comparison-label {
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
   }
-  
+
   .section-header__title {
     font-size: var(--font-size-xl);
   }
-  
+
   .section-header__description {
     font-size: var(--font-size-sm);
   }
-  
+
   .nav-list {
     font-size: var(--font-size-base);
   }
-  
+
   .site-title {
     font-size: 1.5rem;
   }
@@ -1140,16 +1163,16 @@ ul {
   .sidebar-nav {
     padding: var(--spacing-sm) 0;
   }
-  
+
   .nav-list {
     margin-top: var(--spacing-sm);
   }
-  
+
   .nav-list__link {
     padding: var(--spacing-md) var(--spacing-sm);
     font-size: var(--font-size-base);
   }
-  
+
   .site-title {
     font-size: 1.4rem;
   }

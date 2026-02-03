@@ -610,11 +610,29 @@ class WebsiteManager {
     const afterDiv = document.createElement("div");
     afterDiv.slot = "second";
     afterDiv.className = "after-container";
-    const afterImg = document.createElement("img");
-    afterImg.src = item.afterImage;
-    afterImg.alt = `${item.title || "Site"} - After`;
-    afterImg.loading = "lazy";
-    afterDiv.appendChild(afterImg);
+
+    // Check if afterImage is a video (webm)
+    const isVideo =
+      item.afterImage && item.afterImage.toLowerCase().endsWith(".webm");
+
+    if (isVideo) {
+      const afterVideo = document.createElement("video");
+      afterVideo.src = item.afterImage;
+      afterVideo.alt = `${item.title || "Site"} - After`;
+      afterVideo.loading = "lazy";
+      afterVideo.autoplay = true;
+      afterVideo.loop = true;
+      afterVideo.muted = true;
+      afterVideo.playsInline = true;
+      afterVideo.controls = false;
+      afterDiv.appendChild(afterVideo);
+    } else {
+      const afterImg = document.createElement("img");
+      afterImg.src = item.afterImage;
+      afterImg.alt = `${item.title || "Site"} - After`;
+      afterImg.loading = "lazy";
+      afterDiv.appendChild(afterImg);
+    }
 
     const handleSvg = document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -656,7 +674,7 @@ class WebsiteManager {
 
     slider.appendChild(beforeDiv);
     slider.appendChild(afterDiv);
-    // slider.appendChild(handleSvg);
+    //slider.appendChild(handleSvg);
 
     const beforeLabel = document.createElement("div");
     beforeLabel.className = "comparison-label comparison-label--before";
