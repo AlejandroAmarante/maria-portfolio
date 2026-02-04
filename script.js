@@ -1,7 +1,6 @@
 // Constants
 const BREAKPOINT_MOBILE = 800;
 const NAVBAR_SCROLL_THRESHOLD = 120;
-const LOADING_ANIMATION_DELAY = 1000;
 
 const DISPLAY_TYPES = {
   HORIZONTAL_CARD: "horizontal-card",
@@ -22,7 +21,6 @@ class WebsiteManager {
   // Private method to cache DOM elements
   #cacheElements() {
     return {
-      loadingScreen: document.querySelector(".loading-screen"),
       aboutSection: document.getElementById("about"),
       menuToggle: document.querySelector(".menu-toggle"),
       navList: document.querySelector(".nav-list"),
@@ -61,7 +59,6 @@ class WebsiteManager {
   #init() {
     this.#setupEventListeners();
     this.loadContent();
-    this.#checkBackgroundImageLoaded();
     this.#updateActiveNavLink();
   }
 
@@ -835,44 +832,6 @@ class WebsiteManager {
 
     tagList.appendChild(fragment);
     return tagList;
-  }
-
-  // Private method to check background image load
-  #checkBackgroundImageLoaded() {
-    if (!this.elements.aboutSection) return;
-
-    const bgImageValue = window.getComputedStyle(
-      this.elements.aboutSection,
-    ).backgroundImage;
-
-    if (!bgImageValue || bgImageValue === "none") {
-      this.#hideLoadingAnimation();
-      return;
-    }
-
-    const bgUrl = bgImageValue.slice(5, -2);
-    const bgImage = new Image();
-
-    bgImage.onload = () => this.#hideLoadingAnimation();
-    bgImage.onerror = () => this.#hideLoadingAnimation();
-    bgImage.src = bgUrl;
-  }
-
-  // Private method to hide loading animation
-  #hideLoadingAnimation() {
-    const { loadingScreen } = this.elements;
-    if (!loadingScreen) return;
-
-    setTimeout(() => {
-      loadingScreen.classList.add("hidden");
-      loadingScreen.addEventListener(
-        "transitionend",
-        () => {
-          loadingScreen.style.display = "none";
-        },
-        { once: true },
-      );
-    }, LOADING_ANIMATION_DELAY);
   }
 }
 
