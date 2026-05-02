@@ -1,4 +1,4 @@
-// Constants
+// ─── Constants ───────────────────────────────────────────────────────────────
 const BREAKPOINT_MOBILE = 800;
 const NAVBAR_SCROLL_THRESHOLD = 120;
 
@@ -8,20 +8,151 @@ const DISPLAY_TYPES = {
   IMAGE_ONLY: "image-only",
 };
 
+// ─── Tag icon map ─────────────────────────────────────────────────────────────
+const TAG_ICONS = {
+  photography: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14.434 3C15.136 3 15.787 3.369 16.148 3.971L16.921 5.257C17.011 5.408 17.174 5.5 17.35 5.5H19C20.657 5.5 22 6.843 22 8.5V18C22 19.657 20.657 21 19 21H5C3.343 21 2 19.657 2 18V8.5C2 6.843 3.343 5.5 5 5.5H6.65C6.826 5.5 6.989 5.408 7.079 5.257L7.852 3.971C8.213 3.369 8.864 3 9.566 3H14.434ZM12 8.5C9.515 8.5 7.5 10.515 7.5 13C7.5 15.485 9.515 17.5 12 17.5C14.485 17.5 16.5 15.485 16.5 13C16.5 10.515 14.485 8.5 12 8.5ZM12 10.5C13.381 10.5 14.5 11.619 14.5 13C14.5 14.381 13.381 15.5 12 15.5C10.619 15.5 9.5 14.381 9.5 13C9.5 11.619 10.619 10.5 12 10.5Z"/></svg>`,
+  seo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 3C4.134 3 1 6.134 1 10C1 13.866 4.134 17 8 17H9.071C9.024 16.673 9 16.34 9 16C9 15.66 9.024 15.327 9.071 15H8C5.239 15 3 12.761 3 10C3 7.239 5.239 5 8 5H16C18.761 5 21 7.239 21 10C21 10.343 20.966 10.678 20.9 11.001C21.485 11.575 21.97 12.251 22.326 13C22.758 12.091 23 11.074 23 10C23 6.134 19.866 3 16 3H8ZM16 13C14.343 13 13 14.343 13 16C13 17.657 14.343 19 16 19C17.657 19 19 17.657 19 16C19 14.343 17.657 13 16 13ZM11 16C11 13.239 13.239 11 16 11C18.761 11 21 13.239 21 16C21 17.019 20.695 17.967 20.172 18.757L22.707 21.293L21.293 22.707L18.757 20.172C17.967 20.695 17.019 21 16 21C13.239 21 11 18.761 11 16Z"/></svg>`,
+  writing: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.939 14.033C6.707 14.656 6.51 15.233 6.334 15.816C7.293 15.119 8.435 14.677 9.752 14.512C12.265 14.198 14.498 12.539 15.628 10.454L14.172 8.999L15.585 7.584C15.919 7.25 16.252 6.916 16.586 6.582C17.015 6.153 17.5 5.358 18.013 4.215C12.42 5.082 8.995 8.507 6.939 14.033ZM17 8.997L18 9.997C17 12.997 14 15.997 10 16.497C7.331 16.83 5.664 18.664 4.998 21.997H3C4 15.997 6 1.997 21 1.997C20.001 4.994 19.002 6.993 18.003 7.994C17.666 8.33 17.333 8.663 17 8.997Z"/></svg>`,
+  editing: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.728 9.576L14.314 8.162L5 17.476V18.89H6.414L15.728 9.576ZM17.142 8.162L18.556 6.748L17.142 5.334L15.728 6.748L17.142 8.162ZM7.243 20.89H3V16.647L16.435 3.212C16.825 2.822 17.458 2.822 17.849 3.212L20.677 6.041C21.068 6.431 21.068 7.064 20.677 7.455L7.243 20.89Z"/></svg>`,
+};
+
+// ─── Chart helpers ────────────────────────────────────────────────────────────
+function getSegmentColor(ctx, hireDateIndex, beforeColor, afterColor) {
+  const { p0DataIndex, p1DataIndex } = ctx;
+
+  if (p0DataIndex === hireDateIndex - 1 && p1DataIndex === hireDateIndex) {
+    const { chart } = ctx;
+    const { ctx: canvasCtx, chartArea } = chart;
+    if (!chartArea) return beforeColor;
+
+    const meta = chart.getDatasetMeta(0).data;
+    const gradient = canvasCtx.createLinearGradient(
+      meta[hireDateIndex - 1].x,
+      0,
+      meta[hireDateIndex].x,
+      0,
+    );
+    gradient.addColorStop(0, beforeColor);
+    gradient.addColorStop(1, afterColor);
+    return gradient;
+  }
+  return p0DataIndex < hireDateIndex ? beforeColor : afterColor;
+}
+
+function buildLineDataset(data, hireDateIndex) {
+  const before = "#758fb5";
+  const after = "#90c8f3";
+  return {
+    label: "",
+    data,
+    segment: {
+      borderColor: (ctx) => getSegmentColor(ctx, hireDateIndex, before, after),
+      backgroundColor: (ctx) =>
+        ctx.p0DataIndex < hireDateIndex
+          ? "rgba(117,143,181,0.1)"
+          : "rgba(144,200,243,0.1)",
+    },
+    borderWidth: 3,
+    pointRadius: 5,
+    pointBackgroundColor: (ctx) =>
+      ctx.dataIndex < hireDateIndex ? before : after,
+    pointBorderColor: "#fff",
+    pointBorderWidth: 2,
+    tension: 0.4,
+  };
+}
+
+function buildBarDataset(data, hireDateIndex) {
+  return {
+    label: "",
+    data,
+    backgroundColor: (ctx) =>
+      ctx.dataIndex < hireDateIndex ? "#758fb5da" : "#90c8f3da",
+    borderColor: (ctx) =>
+      ctx.dataIndex < hireDateIndex ? "#758fb5" : "#90c8f3ff",
+    borderWidth: 2,
+    borderRadius: 6,
+  };
+}
+
+function getChartDefaults() {
+  const poppins = "'Poppins', sans-serif";
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        align: "center",
+        font: { size: 16, weight: "bold", family: poppins },
+        padding: { top: 10, bottom: 6 },
+      },
+      subtitle: {
+        display: true,
+        align: "center",
+        font: { size: 11, family: poppins, style: "italic" },
+        color: "#777",
+        padding: { bottom: 14 },
+      },
+      annotation: {
+        annotations: {
+          hireDate: {
+            type: "line",
+            xMin: 1.5,
+            xMax: 1.5,
+            borderColor: "#ef4444ab",
+            borderWidth: 1.5,
+            borderDash: [5, 5],
+            drawTime: "beforeDatasetsDraw",
+            label: {
+              display: true,
+              content: "Hired Q3 2025",
+              position: "start",
+              backgroundColor: "#ef4444",
+              color: "#fff",
+              font: { size: 11, weight: "bold", family: poppins },
+              padding: { x: 6, y: 4 },
+              yAdjust: 8,
+            },
+          },
+        },
+      },
+    },
+    layout: { padding: { left: 8, right: 8, top: 8, bottom: 8 } },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: "rgba(0,0,0,0.05)" },
+        grace: "50%",
+        ticks: { font: { family: poppins } },
+      },
+      x: {
+        grid: { display: false },
+        ticks: { font: { family: poppins }, align: "center", padding: 2 },
+        offset: true,
+      },
+    },
+  };
+}
+
+// ─── WebsiteManager class ─────────────────────────────────────────────────────
 class WebsiteManager {
+  #elements;
+  #charts = {};
+  #modal;
+  #socialItems = [];
+  #mediaFilter = "image";
+
   constructor() {
-    this.elements = this.#cacheElements();
-    this.charts = {};
-    this.modal = this.#createModal();
-    this.socialMediaItems = [];
-    this.currentMediaFilter = "image";
+    this.#elements = this.#cacheElements();
+    this.#modal = this.#createModal();
     this.#init();
   }
 
-  // Private method to cache DOM elements
+  // ── DOM cache ──────────────────────────────────────────────────────────────
   #cacheElements() {
     return {
-      aboutSection: document.getElementById("about"),
       menuToggle: document.querySelector(".menu-toggle"),
       navList: document.querySelector(".nav-list"),
       sidebar: document.querySelector(".sidebar-nav"),
@@ -29,561 +160,341 @@ class WebsiteManager {
       clientBlogsGrid: document.querySelector("#client-blogs .works-grid"),
       socialGrid: document.querySelector("#social-showcase .works-grid"),
       mediaFilterButtons: document.querySelectorAll(".media-filter-btn"),
-      socialShowcaseSection: document.getElementById("social-showcase"),
       redesignGrid: document.querySelector("#site-redesigns .works-grid"),
-      resultsSection: document.getElementById("results"),
       resultsContainer: document.querySelector("#results .results-container"),
     };
   }
 
-  // Private method to create modal
+  // ── Modal ──────────────────────────────────────────────────────────────────
   #createModal() {
     const modal = document.createElement("div");
     modal.className = "modal";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-label", "Image preview");
 
     const closeBtn = document.createElement("span");
     closeBtn.className = "modal__close";
     closeBtn.innerHTML = "&times;";
+    closeBtn.setAttribute("role", "button");
+    closeBtn.setAttribute("tabindex", "0");
+    closeBtn.setAttribute("aria-label", "Close image preview");
 
     const image = document.createElement("img");
     image.className = "modal__image";
-    image.alt = "Modal image";
+    image.alt = "";
 
     modal.append(closeBtn, image);
     document.body.appendChild(modal);
-
     return { element: modal, closeBtn, image };
   }
 
-  // Private initialization method
+  // ── Init ───────────────────────────────────────────────────────────────────
   #init() {
     this.#setupEventListeners();
     this.loadContent();
     this.#updateActiveNavLink();
   }
 
-  // Private method for event listeners
+  // ── Event listeners ────────────────────────────────────────────────────────
   #setupEventListeners() {
-    // Mobile navigation toggle
-    this.elements.menuToggle?.addEventListener("click", () =>
-      this.#toggleMobileNav(),
-    );
+    const { menuToggle, navList, navOverlay, mediaFilterButtons } =
+      this.#elements;
 
-    // Close nav when clicking overlay
-    this.elements.navOverlay?.addEventListener("click", () =>
-      this.#closeMobileNav(),
-    );
+    menuToggle?.addEventListener("click", () => this.#toggleMobileNav());
+    navOverlay?.addEventListener("click", () => this.#closeMobileNav());
 
-    // Navigation link clicks - close mobile nav
-    this.elements.navList?.addEventListener("click", (e) => {
-      if (e.target.tagName === "A") {
-        this.#closeMobileNav();
-      }
+    navList?.addEventListener("click", (e) => {
+      if (e.target.tagName === "A") this.#closeMobileNav();
     });
 
-    // Scroll events (throttled for performance)
-    let scrollTimeout;
+    // Throttled scroll
+    let scrollTick = false;
     window.addEventListener(
       "scroll",
       () => {
-        if (scrollTimeout) return;
-
-        scrollTimeout = setTimeout(() => {
+        if (scrollTick) return;
+        scrollTick = true;
+        requestAnimationFrame(() => {
           this.#handleNavbarScroll();
           this.#updateActiveNavLink();
-          scrollTimeout = null;
-        }, 16); // ~60fps
+          scrollTick = false;
+        });
       },
       { passive: true },
     );
 
-    // Resize events (debounced for performance)
-    let resizeTimeout;
+    // Debounced resize
+    let resizeTimer;
     window.addEventListener("resize", () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        // Close mobile nav if window is resized to desktop size
-        if (window.innerWidth > BREAKPOINT_MOBILE) {
-          this.#closeMobileNav();
-        }
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (window.innerWidth > BREAKPOINT_MOBILE) this.#closeMobileNav();
       }, 150);
     });
 
-    // Modal events
-    this.modal.closeBtn.addEventListener("click", () => this.#closeModal());
-    this.modal.element.addEventListener("click", (e) => {
-      if (e.target === this.modal.element) this.#closeModal();
+    // Modal
+    this.#modal.closeBtn.addEventListener("click", () => this.#closeModal());
+    this.#modal.closeBtn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") this.#closeModal();
+    });
+    this.#modal.element.addEventListener("click", (e) => {
+      if (e.target === this.#modal.element) this.#closeModal();
     });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         this.#closeModal();
-        if (window.innerWidth <= BREAKPOINT_MOBILE) {
-          this.#closeMobileNav();
-        }
+        if (window.innerWidth <= BREAKPOINT_MOBILE) this.#closeMobileNav();
       }
     });
 
-    // Media filter buttons
-    this.elements.mediaFilterButtons?.forEach((btn) => {
+    // Media filter
+    mediaFilterButtons?.forEach((btn) => {
       btn.addEventListener("click", (e) => this.#handleMediaFilter(e));
     });
   }
 
-  // Private method to toggle mobile navigation
+  // ── Mobile nav ─────────────────────────────────────────────────────────────
   #toggleMobileNav() {
-    const { sidebar, menuToggle, navOverlay } = this.elements;
-
-    const isOpen = sidebar.classList.contains("active");
-
-    if (isOpen) {
-      this.#closeMobileNav();
-    } else {
-      this.#openMobileNav();
-    }
+    this.#elements.sidebar.classList.contains("active")
+      ? this.#closeMobileNav()
+      : this.#openMobileNav();
   }
 
-  // Private method to open mobile navigation
   #openMobileNav() {
-    const { sidebar, menuToggle, navOverlay } = this.elements;
-
+    const { sidebar, menuToggle, navOverlay } = this.#elements;
     sidebar.classList.add("active");
     menuToggle.classList.add("active");
     navOverlay.classList.add("active");
-    document.body.style.overflow = "hidden";
-
     menuToggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
   }
 
-  // Private method to close mobile navigation
   #closeMobileNav() {
-    const { sidebar, menuToggle, navOverlay } = this.elements;
-
+    const { sidebar, menuToggle, navOverlay } = this.#elements;
     sidebar.classList.remove("active");
     menuToggle.classList.remove("active");
     navOverlay.classList.remove("active");
-    document.body.style.overflow = "";
-
     menuToggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
   }
 
-  // Private method to handle media filter
+  // ── Media filter ───────────────────────────────────────────────────────────
   #handleMediaFilter(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
     const button = e.currentTarget;
     const filterType = button.dataset.filter;
+    if (!filterType || filterType === this.#mediaFilter) return;
 
-    if (!filterType || filterType === this.currentMediaFilter) return;
-
-    this.currentMediaFilter = filterType;
+    this.#mediaFilter = filterType;
 
     // Update button states
-    this.elements.mediaFilterButtons.forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.filter === filterType);
+    this.#elements.mediaFilterButtons.forEach((btn) => {
+      const isActive = btn.dataset.filter === filterType;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
 
-    const grid = this.elements.socialGrid;
-
-    // Filter and render
-    const filteredItems = this.socialMediaItems.filter(
-      (item) => item.mediaType === filterType,
+    const grid = this.#elements.socialGrid;
+    const filtered = this.#socialItems.filter(
+      (i) => i.mediaType === filterType,
     );
 
-    // Simple fade effect
     grid.style.transition = "opacity 0.2s ease";
     grid.style.opacity = "0";
 
     setTimeout(() => {
-      this.#renderSection(filteredItems, grid);
+      this.#renderSection(filtered, grid);
       grid.style.opacity = "1";
     }, 200);
   }
 
-  // Private method to get chart defaults
-  #getChartDefaults() {
-    return {
-      responsive: true,
-      maintainAspectRatio: true,
-      font: { family: "'Poppins', sans-serif" },
-      plugins: {
-        legend: {
-          display: false,
-          labels: { font: { family: "'Poppins', sans-serif" } },
-        },
-        title: {
-          display: true,
-          align: "center",
-          font: { size: 18, weight: "bold", family: "'Poppins', sans-serif" },
-          padding: { top: 10, bottom: 10 },
-        },
-        subtitle: {
-          display: true,
-          align: "center",
-          font: { size: 12, family: "'Poppins', sans-serif", style: "italic" },
-          color: "#666",
-          padding: { bottom: 15 },
-        },
-        annotation: {
-          annotations: {
-            hireDate: {
-              type: "line",
-              xMin: 2,
-              xMax: 2,
-              borderColor: "#ef4444ab",
-              borderWidth: 0,
-              borderDash: [6, 6],
-              drawTime: "beforeDatasetsDraw",
-              label: {
-                display: true,
-                content: "Hired Q3 2025",
-                position: "end",
-                backgroundColor: "#ef4444",
-                color: "#fff",
-                font: {
-                  size: 13,
-                  weight: "bold",
-                  family: "'Poppins', sans-serif",
-                },
-                padding: 5,
-                yAdjust: 8,
-              },
-            },
-          },
-        },
-      },
-      layout: { padding: { left: 10, right: 10, top: 10, bottom: 10 } },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: { color: "rgba(0, 0, 0, 0.05)" },
-          grace: "60%",
-          ticks: { font: { family: "'Poppins', sans-serif" } },
-        },
-        x: {
-          grid: { display: false },
-          ticks: {
-            font: { family: "'Poppins', sans-serif" },
-            align: "center",
-            padding: 1,
-          },
-          offset: true,
-        },
-      },
-    };
-  }
-
-  // Private method to create individual charts
-  #createChart(config, labels, defaults) {
-    const { element, type, title, subTitle, data, hireDateIndex } = config;
-
-    const dataset =
-      type === "bar"
-        ? this.#createBarDataset(data, hireDateIndex)
-        : this.#createLineDataset(data, hireDateIndex);
-
-    const options = {
-      ...defaults,
-      plugins: {
-        ...defaults.plugins,
-        title: { ...defaults.plugins.title, text: title },
-      },
-    };
-
-    // Add subtitle if provided
-    if (subTitle) {
-      options.plugins.subtitle = {
-        ...defaults.plugins.subtitle,
-        text: subTitle,
-      };
-    }
-
-    return new Chart(element, {
-      type,
-      data: { labels, datasets: [dataset] },
-      options,
-    });
-  }
-
-  // Private method for line chart dataset
-  #createLineDataset(data, hireDateIndex) {
-    return {
-      label: "",
-      data,
-      segment: {
-        borderColor: (ctx) =>
-          this.#getSegmentColor(ctx, hireDateIndex, "#758fb5", "#90c8f3ff"),
-        backgroundColor: (ctx) =>
-          ctx.p0DataIndex < hireDateIndex
-            ? "rgba(117, 143, 181, 0.1)"
-            : "rgba(144, 200, 243, 0.1)",
-      },
-      borderWidth: 3,
-      pointRadius: 5,
-      pointBackgroundColor: (ctx) =>
-        ctx.dataIndex < hireDateIndex ? "#758fb5" : "#90c8f3ff",
-      pointBorderColor: "#fff",
-      pointBorderWidth: 2,
-      tension: 0.4,
-    };
-  }
-
-  // Private method for bar chart dataset
-  #createBarDataset(data, hireDateIndex) {
-    return {
-      label: "",
-      data,
-      backgroundColor: (ctx) =>
-        ctx.dataIndex < hireDateIndex ? "#758fb5da" : "#90c8f3da",
-      borderColor: (ctx) =>
-        ctx.dataIndex < hireDateIndex ? "#758fb5" : "#90c8f3ff",
-      borderWidth: 2,
-      borderRadius: 6,
-    };
-  }
-
-  // Private helper for segment colors with gradient
-  #getSegmentColor(ctx, hireDateIndex, beforeColor, afterColor) {
-    if (
-      ctx.p0DataIndex === hireDateIndex - 1 &&
-      ctx.p1DataIndex === hireDateIndex
-    ) {
-      const { chart } = ctx;
-      const { ctx: canvasCtx, chartArea } = chart;
-      if (!chartArea) return beforeColor;
-
-      const meta = chart.getDatasetMeta(0).data;
-      const gradient = canvasCtx.createLinearGradient(
-        meta[hireDateIndex - 1].x,
-        0,
-        meta[hireDateIndex].x,
-        0,
-      );
-      gradient.addColorStop(0, beforeColor);
-      gradient.addColorStop(1, afterColor);
-      return gradient;
-    }
-    return ctx.p0DataIndex < hireDateIndex ? beforeColor : afterColor;
-  }
-
-  // Private method to initialize charts from data
-  #initializeChartsFromData(chartGroups) {
-    if (!this.elements.resultsContainer || !Array.isArray(chartGroups)) return;
-
-    const labels = ["Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"];
-    const chartDefaults = this.#getChartDefaults();
-
-    this.elements.resultsContainer.innerHTML = "";
-
-    chartGroups.forEach((group) => {
-      const groupElement = this.#createChartGroup(group, labels, chartDefaults);
-      this.elements.resultsContainer.appendChild(groupElement);
-    });
-  }
-
-  // Private method to create chart group
-  #createChartGroup(group, labels, chartDefaults) {
-    const groupWrapper = document.createElement("div");
-    groupWrapper.className = "chart-group";
-    groupWrapper.id = group.id;
-
-    if (group.title || group.description) {
-      const header = document.createElement("div");
-      header.className = "section-header";
-
-      if (group.title) {
-        const title = document.createElement("h3");
-        title.className = "section-header__title";
-        title.textContent = group.title;
-        header.appendChild(title);
-      }
-
-      if (group.description) {
-        const description = document.createElement("p");
-        description.className = "section-header__description";
-        description.textContent = group.description;
-        header.appendChild(description);
-      }
-
-      groupWrapper.appendChild(header);
-    }
-
-    const chartsGrid = document.createElement("div");
-    chartsGrid.className = "charts-grid";
-
-    group.charts.forEach((chartConfig) => {
-      const chartWrapper = document.createElement("div");
-      chartWrapper.className = "chart-wrapper";
-
-      const canvas = document.createElement("canvas");
-      canvas.id = `${group.id}-${chartConfig.id}`;
-
-      chartWrapper.appendChild(canvas);
-      chartsGrid.appendChild(chartWrapper);
-
-      // Create chart after canvas is in DOM
-      setTimeout(() => {
-        this.charts[`${group.id}-${chartConfig.id}`] = this.#createChart(
-          {
-            element: canvas,
-            type: chartConfig.type,
-            title: chartConfig.title,
-            subTitle: chartConfig.subTitle,
-            data: chartConfig.data,
-            hireDateIndex: chartConfig.hireDateIndex,
-          },
-          labels,
-          chartDefaults,
-        );
-      }, 0);
-    });
-
-    groupWrapper.appendChild(chartsGrid);
-    return groupWrapper;
-  }
-
-  // Public method to show modal
-  showModal(imageSrc) {
-    this.modal.image.src = imageSrc;
-    this.modal.element.classList.add("active");
+  // ── Modal ──────────────────────────────────────────────────────────────────
+  showModal(src, alt = "") {
+    this.#modal.image.src = src;
+    this.#modal.image.alt = alt;
+    this.#modal.element.classList.add("active");
     document.body.style.overflow = "hidden";
+    this.#modal.closeBtn.focus();
   }
 
-  // Private method to close modal
   #closeModal() {
-    this.modal.element.classList.remove("active");
+    this.#modal.element.classList.remove("active");
     document.body.style.overflow = "";
   }
 
-  // Private method for navbar scroll effect
+  // ── Navbar scroll ──────────────────────────────────────────────────────────
   #handleNavbarScroll() {
-    this.elements.sidebar?.classList.toggle(
+    this.#elements.sidebar?.classList.toggle(
       "navbar-scroll",
       window.scrollY > NAVBAR_SCROLL_THRESHOLD,
     );
   }
 
-  // Private method to update active nav link
+  // ── Active nav link ────────────────────────────────────────────────────────
   #updateActiveNavLink() {
-    if (!this.elements.navList) return;
+    const navLinks = Array.from(
+      this.#elements.navList?.querySelectorAll("a") ?? [],
+    );
+    if (!navLinks.length) return;
 
-    const sections = document.querySelectorAll("section");
-    const navLinks = Array.from(this.elements.navList.querySelectorAll("a"));
-    const scrollPosition = window.scrollY + 100;
+    const scrollY = window.scrollY + 120;
+    let activeId = null;
 
-    let activeSection = null;
+    document
+      .querySelectorAll("section")
+      .forEach(({ offsetParent, offsetTop, offsetHeight, id }) => {
+        if (!offsetParent) return;
+        if (scrollY >= offsetTop && scrollY < offsetTop + offsetHeight)
+          activeId = id;
+      });
 
-    sections.forEach((section) => {
-      if (!section.offsetParent) return;
-
-      const { offsetTop, offsetHeight, id } = section;
-      if (
-        scrollPosition >= offsetTop &&
-        scrollPosition < offsetTop + offsetHeight
-      ) {
-        activeSection = id;
-      }
-    });
-
-    if (activeSection) {
+    if (activeId) {
       navLinks.forEach((link) => {
         link.classList.toggle(
           "active",
-          link.getAttribute("href")?.endsWith(`#${activeSection}`),
+          link.getAttribute("href")?.endsWith(`#${activeId}`),
         );
       });
     }
   }
 
-  // Public method to load content
-  async loadContent() {
-    try {
-      const response = await fetch("data.json");
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
+  // ── Chart: stat cards ──────────────────────────────────────────────────────
+  #createStatsRow(stats) {
+    const row = document.createElement("div");
+    row.className = "stats-row";
 
-      const data = await response.json();
-
-      // Render social media section
-      if (data.socialMedia) {
-        this.socialMediaItems = data.socialMedia;
-        const initialSocialItems = this.socialMediaItems.filter(
-          (item) => item.mediaType === this.currentMediaFilter,
-        );
-        this.#renderSection(initialSocialItems, this.elements.socialGrid);
-      }
-
-      // Render articles section
-      if (data.articles) {
-        this.#renderSection(data.articles, this.elements.clientBlogsGrid);
-      }
-
-      // Render site redesigns section
-      if (data.siteRedesigns) {
-        this.#renderRedesignSection(
-          data.siteRedesigns,
-          this.elements.redesignGrid,
-        );
-      }
-
-      // Initialize charts from data
-      if (data.chartGroups) {
-        this.#initializeChartsFromData(data.chartGroups);
-      }
-    } catch (error) {
-      console.error("Error loading content:", error);
-    }
-  }
-
-  // Private method to render a section
-  #renderSection(items, container) {
-    if (!container || !Array.isArray(items)) return;
-
-    container.innerHTML = "";
-
-    if (items.length === 0) return;
-
-    const fragment = document.createDocumentFragment();
-    items.forEach((item) => {
-      fragment.appendChild(this.#createItemElement(item));
+    stats.forEach(({ value, label, note }) => {
+      const card = document.createElement("div");
+      card.className = "stat-card";
+      card.innerHTML = `
+        <div class="stat-card__value">${value}</div>
+        <div class="stat-card__label">${label}</div>
+        <div class="stat-card__note">${note}</div>
+      `;
+      row.appendChild(card);
     });
-    container.appendChild(fragment);
+
+    return row;
   }
 
-  // Private method to render redesign section with before/after sliders
+  // ── Chart: group container ─────────────────────────────────────────────────
+  #createChartGroup(group, labels, defaults) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "chart-group";
+    if (group.id) wrapper.id = group.id;
+
+    // Group header
+    if (group.title || group.description) {
+      const header = document.createElement("div");
+      header.className = "section-header";
+
+      if (group.title) {
+        const t = document.createElement("h3");
+        t.className = "section-header__title";
+        t.textContent = group.title;
+        header.appendChild(t);
+      }
+      if (group.description) {
+        const d = document.createElement("p");
+        d.className = "section-header__description";
+        d.textContent = group.description;
+        header.appendChild(d);
+      }
+
+      wrapper.appendChild(header);
+    }
+
+    // Stat cards
+    if (Array.isArray(group.stats) && group.stats.length) {
+      wrapper.appendChild(this.#createStatsRow(group.stats));
+    }
+
+    // Charts grid
+    const grid = document.createElement("div");
+    grid.className = "charts-grid";
+
+    group.charts.forEach((cfg) => {
+      const chartWrapper = document.createElement("div");
+      chartWrapper.className = "chart-wrapper";
+
+      const canvas = document.createElement("canvas");
+      const chartId = `${group.id}-${cfg.id}`;
+      canvas.id = chartId;
+
+      chartWrapper.appendChild(canvas);
+      grid.appendChild(chartWrapper);
+
+      // Build chart after canvas is in DOM
+      requestAnimationFrame(() => {
+        const dataset =
+          cfg.type === "bar"
+            ? buildBarDataset(cfg.data, cfg.hireDateIndex)
+            : buildLineDataset(cfg.data, cfg.hireDateIndex);
+
+        const options = JSON.parse(JSON.stringify(defaults)); // deep clone
+        options.plugins.title.text = cfg.title ?? "";
+        options.plugins.subtitle.text = cfg.subTitle ?? "";
+        options.plugins.subtitle.display = Boolean(cfg.subTitle);
+
+        this.#charts[chartId] = new Chart(canvas, {
+          type: cfg.type,
+          data: { labels, datasets: [dataset] },
+          options,
+        });
+      });
+    });
+
+    wrapper.appendChild(grid);
+    return wrapper;
+  }
+
+  // ── Charts: init from data ─────────────────────────────────────────────────
+  #initCharts(chartGroups) {
+    if (!this.#elements.resultsContainer || !Array.isArray(chartGroups)) return;
+
+    const labels = ["Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"];
+    const defaults = getChartDefaults();
+
+    this.#elements.resultsContainer.innerHTML = "";
+
+    chartGroups.forEach((group) => {
+      this.#elements.resultsContainer.appendChild(
+        this.#createChartGroup(group, labels, defaults),
+      );
+    });
+  }
+
+  // ── Redesign section ───────────────────────────────────────────────────────
   #renderRedesignSection(items, container) {
     if (!container || !Array.isArray(items)) return;
-
     container.innerHTML = "";
 
-    if (items.length === 0) return;
-
-    const fragment = document.createDocumentFragment();
-    items.forEach((item, index) => {
-      fragment.appendChild(this.#createRedesignElement(item, index));
-    });
-    container.appendChild(fragment);
+    const frag = document.createDocumentFragment();
+    items.forEach((item, i) =>
+      frag.appendChild(this.#createRedesignElement(item, i)),
+    );
+    container.appendChild(frag);
   }
 
-  // Private method to create redesign comparison element
-  #createRedesignElement(item, index) {
+  #createRedesignElement(item) {
     const wrapper = document.createElement("div");
     wrapper.className = "redesign-item";
 
     if (item.title || item.description) {
       const info = document.createElement("div");
       info.className = "section-header";
+
       if (item.title) {
-        const title = document.createElement("h3");
-        title.className = "section-header__title";
-        title.textContent = item.title;
-        info.appendChild(title);
+        const t = document.createElement("h3");
+        t.className = "section-header__title";
+        t.textContent = item.title;
+        info.appendChild(t);
       }
       if (item.description) {
-        const desc = document.createElement("p");
-        desc.className = "section-header__description";
-        desc.textContent = item.description;
-        info.appendChild(desc);
+        const d = document.createElement("p");
+        d.className = "section-header__description";
+        d.textContent = item.description;
+        info.appendChild(d);
       }
       wrapper.appendChild(info);
     }
@@ -595,115 +506,74 @@ class WebsiteManager {
     slider.className = "comparison-slider";
     slider.value = 50;
 
+    // Before
     const beforeDiv = document.createElement("div");
     beforeDiv.slot = "first";
     beforeDiv.className = "before-container";
     const beforeImg = document.createElement("img");
     beforeImg.src = item.beforeImage;
-    beforeImg.alt = `${item.title || "Site"} - Before`;
+    beforeImg.alt = `${item.title ?? "Site"} — Before`;
     beforeImg.loading = "lazy";
     beforeDiv.appendChild(beforeImg);
 
+    // After (image or video)
     const afterDiv = document.createElement("div");
     afterDiv.slot = "second";
     afterDiv.className = "after-container";
 
-    // Check if afterImage is a video (webm)
-    const isVideo =
-      item.afterImage && item.afterImage.toLowerCase().endsWith(".webm");
-
-    if (isVideo) {
-      const afterVideo = document.createElement("video");
-      afterVideo.src = item.afterImage;
-      afterVideo.alt = `${item.title || "Site"} - After`;
-      afterVideo.loading = "lazy";
-      afterVideo.autoplay = true;
-      afterVideo.loop = true;
-      afterVideo.muted = true;
-      afterVideo.playsInline = true;
-      afterVideo.controls = false;
-      afterDiv.appendChild(afterVideo);
+    if (item.afterImage?.toLowerCase().endsWith(".webm")) {
+      const v = document.createElement("video");
+      v.src = item.afterImage;
+      v.autoplay = v.loop = v.muted = v.playsInline = true;
+      afterDiv.appendChild(v);
     } else {
       const afterImg = document.createElement("img");
       afterImg.src = item.afterImage;
-      afterImg.alt = `${item.title || "Site"} - After`;
+      afterImg.alt = `${item.title ?? "Site"} — After`;
       afterImg.loading = "lazy";
       afterDiv.appendChild(afterImg);
     }
 
-    const handleSvg = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "svg",
-    );
-    handleSvg.setAttribute("slot", "handle");
-    handleSvg.setAttribute("width", "100");
-    handleSvg.setAttribute("viewBox", "-8 -3 16 6");
-    handleSvg.classList.add("custom-animated-handle");
-
-    const outlinePath = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "path",
-    );
-    outlinePath.setAttribute("stroke", "#00000070");
-    outlinePath.setAttribute(
-      "d",
-      "M -5 -2 L -7 0 L -5 2 M -5 -2 L -5 2 M 5 -2 L 7 0 L 5 2 M 5 -2 L 5 2",
-    );
-    outlinePath.setAttribute("stroke-width", "2.5");
-    outlinePath.setAttribute("fill", "none");
-    outlinePath.setAttribute("vector-effect", "non-scaling-stroke");
-
-    const handlePath = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "path",
-    );
-    handlePath.setAttribute("stroke", "#fff");
-    handlePath.setAttribute(
-      "d",
-      "M -5 -2 L -7 0 L -5 2 M -5 -2 L -5 2 M 5 -2 L 7 0 L 5 2 M 5 -2 L 5 2",
-    );
-    handlePath.setAttribute("stroke-width", "1");
-    handlePath.setAttribute("fill", "#fff");
-    handlePath.setAttribute("vector-effect", "non-scaling-stroke");
-
-    handleSvg.appendChild(outlinePath);
-    handleSvg.appendChild(handlePath);
-
     slider.appendChild(beforeDiv);
     slider.appendChild(afterDiv);
-    //slider.appendChild(handleSvg);
 
-    const beforeLabel = document.createElement("div");
-    beforeLabel.className = "comparison-label comparison-label--before";
-    beforeLabel.textContent = "Before";
+    // Labels
+    const beforeLabel = Object.assign(document.createElement("div"), {
+      className: "comparison-label comparison-label--before",
+      textContent: "Before",
+    });
+    const afterLabel = Object.assign(document.createElement("div"), {
+      className: "comparison-label comparison-label--after",
+      textContent: "After",
+    });
 
-    const afterLabel = document.createElement("div");
-    afterLabel.className = "comparison-label comparison-label--after";
-    afterLabel.textContent = "After";
-
-    sliderWrapper.appendChild(slider);
-    sliderWrapper.appendChild(beforeLabel);
-    sliderWrapper.appendChild(afterLabel);
-
+    sliderWrapper.append(slider, beforeLabel, afterLabel);
     wrapper.appendChild(sliderWrapper);
 
-    const updateLabels = () => {
-      const value = slider.value;
-      beforeLabel.style.opacity = value > 15 ? "1" : "0";
-      afterLabel.style.opacity = value < 85 ? "1" : "0";
+    const syncLabels = () => {
+      beforeLabel.style.opacity = slider.value > 15 ? "1" : "0";
+      afterLabel.style.opacity = slider.value < 85 ? "1" : "0";
     };
-    updateLabels();
-    slider.addEventListener("slide", updateLabels);
-    slider.addEventListener("change", updateLabels);
+    syncLabels();
+    slider.addEventListener("slide", syncLabels);
+    slider.addEventListener("change", syncLabels);
 
     return wrapper;
   }
 
-  // Private method to create item elements
-  #createItemElement(item) {
-    const displayType = item.displayType || DISPLAY_TYPES.IMAGE_ONLY;
+  // ── Generic section render ─────────────────────────────────────────────────
+  #renderSection(items, container) {
+    if (!container || !Array.isArray(items)) return;
+    container.innerHTML = "";
+    if (!items.length) return;
 
-    switch (displayType) {
+    const frag = document.createDocumentFragment();
+    items.forEach((item) => frag.appendChild(this.#createItemElement(item)));
+    container.appendChild(frag);
+  }
+
+  #createItemElement(item) {
+    switch (item.displayType ?? DISPLAY_TYPES.IMAGE_ONLY) {
       case DISPLAY_TYPES.HORIZONTAL_CARD:
         return this.#createFullCard(item, true);
       case DISPLAY_TYPES.VERTICAL_CARD:
@@ -713,35 +583,30 @@ class WebsiteManager {
     }
   }
 
-  // Private method to create image-only card
+  // ── Card builders ──────────────────────────────────────────────────────────
   #createImageOnlyCard(item) {
     const card = document.createElement("div");
     card.className = "card card--image-only";
 
     if (item.mediaType === "video") {
-      const video = document.createElement("video");
-      video.src = item.media;
-      video.alt = item.description || "Video";
-      video.loading = "lazy";
-      video.className = "card__image";
-      video.controls = true;
-      video.muted = true;
-      video.playsInline = true;
-      card.appendChild(video);
+      const v = document.createElement("video");
+      v.src = item.media;
+      v.className = "card__image";
+      v.controls = v.muted = v.playsInline = true;
+      card.appendChild(v);
     } else {
-      const image = document.createElement("img");
-      image.src = item.media;
-      image.alt = item.description || "Image";
-      image.loading = "lazy";
-      image.className = "card__image";
-      card.addEventListener("click", () => this.showModal(item.media));
-      card.appendChild(image);
+      const img = document.createElement("img");
+      img.src = item.media;
+      img.alt = item.description ?? "Social media post";
+      img.loading = "lazy";
+      img.className = "card__image";
+      card.addEventListener("click", () => this.showModal(item.media, img.alt));
+      card.appendChild(img);
     }
 
     return card;
   }
 
-  // Private method to create full card
   #createFullCard(item, isHorizontal) {
     const card = document.createElement("a");
     card.className = `card${isHorizontal ? " card--horizontal" : ""}`;
@@ -756,84 +621,90 @@ class WebsiteManager {
     }
 
     if (item.media) {
-      const image = document.createElement("img");
-      image.src = item.media;
-      image.alt = item.title || "Card image";
-      image.loading = "lazy";
-      image.className = "card__image";
-      card.appendChild(image);
+      const img = document.createElement("img");
+      img.src = item.media;
+      img.alt = item.title ?? "Article thumbnail";
+      img.loading = "lazy";
+      img.className = "card__image";
+      card.appendChild(img);
     }
 
-    const content = this.#createCardContent(item);
-    card.appendChild(content);
-
+    card.appendChild(this.#createCardContent(item));
     return card;
   }
 
-  // Private method to create card content
   #createCardContent(item) {
     const content = document.createElement("div");
     content.className = "card__content";
 
     if (item.title) {
-      const title = document.createElement("h2");
-      title.textContent = item.title;
-      title.className = "card__title";
-      content.appendChild(title);
+      const t = document.createElement("h3");
+      t.className = "card__title";
+      t.textContent = item.title;
+      content.appendChild(t);
     }
-
     if (item.description) {
-      const description = document.createElement("p");
-      description.textContent = item.description;
-      description.className = "card__description";
-      content.appendChild(description);
+      const d = document.createElement("p");
+      d.className = "card__description";
+      d.textContent = item.description;
+      content.appendChild(d);
     }
-
     if (Array.isArray(item.tags) && item.tags.length) {
       content.appendChild(this.#createTagList(item.tags));
     }
-
     return content;
   }
 
-  // Private method to create tag list
-  // Private method to create tag list
   #createTagList(tags) {
-    const tagList = document.createElement("div");
-    tagList.className = "tag-list";
+    const list = document.createElement("div");
+    list.className = "tag-list";
 
-    const tagIcons = {
-      photography:
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14.4336 3C15.136 3 15.7869 3.36852 16.1484 3.9707L16.9209 5.25684C17.0113 5.40744 17.174 5.5 17.3496 5.5H19C20.6569 5.5 22 6.84315 22 8.5V18C22 19.6569 20.6569 21 19 21H5C3.34315 21 2 19.6569 2 18V8.5C2 6.84315 3.34315 5.5 5 5.5H6.65039C6.82602 5.5 6.98874 5.40744 7.0791 5.25684L7.85156 3.9707C8.21306 3.36852 8.86403 3 9.56641 3H14.4336ZM8.79492 6.28613C8.34311 7.03915 7.52855 7.5 6.65039 7.5H5C4.44772 7.5 4 7.94772 4 8.5V18C4 18.5523 4.44772 19 5 19H19C19.5523 19 20 18.5523 20 18V8.5C20 7.94772 19.5523 7.5 19 7.5H17.3496C16.4715 7.5 15.6569 7.03915 15.2051 6.28613L14.4336 5H9.56641L8.79492 6.28613ZM12 8.5C14.4853 8.5 16.5 10.5147 16.5 13C16.5 15.4853 14.4853 17.5 12 17.5C9.51472 17.5 7.5 15.4853 7.5 13C7.5 10.5147 9.51472 8.5 12 8.5ZM12 10.5C10.6193 10.5 9.5 11.6193 9.5 13C9.5 14.3807 10.6193 15.5 12 15.5C13.3807 15.5 14.5 14.3807 14.5 13C14.5 11.6193 13.3807 10.5 12 10.5Z"></path></svg>',
-      seo: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 3C4.13401 3 1 6.13401 1 10C1 13.866 4.13401 17 8 17H9.07089C9.02417 16.6734 9 16.3395 9 16C9 15.6605 9.02417 15.3266 9.07089 15H8C5.23858 15 3 12.7614 3 10C3 7.23858 5.23858 5 8 5H16C18.7614 5 21 7.23858 21 10C21 10.3428 20.9655 10.6775 20.8998 11.0008C21.4853 11.5748 21.9704 12.2508 22.3264 13C22.7583 12.0907 23 11.0736 23 10C23 6.13401 19.866 3 16 3H8ZM16 13C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13ZM11 16C11 13.2386 13.2386 11 16 11C18.7614 11 21 13.2386 21 16C21 17.0191 20.6951 17.967 20.1716 18.7574L22.7071 21.2929L21.2929 22.7071L18.7574 20.1716C17.967 20.6951 17.0191 21 16 21C13.2386 21 11 18.7614 11 16Z"></path></svg>',
-      writing:
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.93912 14.0328C6.7072 14.6563 6.51032 15.2331 6.33421 15.8155C7.29345 15.1189 8.43544 14.6767 9.75193 14.5121C12.2652 14.198 14.4976 12.5385 15.6279 10.4537L14.1721 8.99888L15.5848 7.58417C15.9185 7.25004 16.2521 6.91614 16.5858 6.58248C17.0151 6.15312 17.5 5.35849 18.0129 4.2149C12.4197 5.08182 8.99484 8.50647 6.93912 14.0328ZM17 8.99739L18 9.99669C17 12.9967 14 15.9967 10 16.4967C7.33146 16.8303 5.66421 18.6636 4.99824 21.9967H3C4 15.9967 6 1.99669 21 1.99669C20.0009 4.99402 19.0018 6.99313 18.0027 7.99402C17.6662 8.33049 17.3331 8.66382 17 8.99739Z"></path></svg>',
-      editing:
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg>',
-    };
-
-    const fragment = document.createDocumentFragment();
-    tags.forEach((tagText) => {
+    tags.forEach((text) => {
       const tag = document.createElement("div");
       tag.className = "tag";
-
-      // Get icon based on tag text (case-insensitive match)
-      const tagKey = tagText.toLowerCase();
-      const icon = tagIcons[tagKey] || "";
-
-      if (icon) {
-        tag.innerHTML = icon + tagText;
-      } else {
-        tag.textContent = tagText;
-      }
-
-      fragment.appendChild(tag);
+      const icon = TAG_ICONS[text.toLowerCase()] ?? "";
+      tag.innerHTML = icon ? icon + text : "";
+      if (!icon) tag.textContent = text;
+      list.appendChild(tag);
     });
 
-    tagList.appendChild(fragment);
-    return tagList;
+    return list;
+  }
+
+  // ── Data fetch ─────────────────────────────────────────────────────────────
+  async loadContent() {
+    try {
+      const res = await fetch("data.json");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      if (data.socialMedia) {
+        this.#socialItems = data.socialMedia;
+        const initial = this.#socialItems.filter(
+          (i) => i.mediaType === this.#mediaFilter,
+        );
+        this.#renderSection(initial, this.#elements.socialGrid);
+      }
+
+      if (data.articles) {
+        this.#renderSection(data.articles, this.#elements.clientBlogsGrid);
+      }
+
+      if (data.siteRedesigns) {
+        this.#renderRedesignSection(
+          data.siteRedesigns,
+          this.#elements.redesignGrid,
+        );
+      }
+
+      if (data.chartGroups) {
+        this.#initCharts(data.chartGroups);
+      }
+    } catch (err) {
+      console.error("Failed to load content:", err);
+    }
   }
 }
 
-// Initialize when DOM is ready
+// ── Boot ──────────────────────────────────────────────────────────────────────
 window.addEventListener("DOMContentLoaded", () => new WebsiteManager());
