@@ -99,20 +99,20 @@ function getChartDefaults() {
         annotations: {
           hireDate: {
             type: "line",
-            xMin: 1.5,
-            xMax: 1.5,
+            xMin: 2,
+            xMax: 2,
             borderColor: "#ef4444ab",
-            borderWidth: 1.5,
-            borderDash: [5, 5],
+            borderWidth: 0,
+            borderDash: [6, 6],
             drawTime: "beforeDatasetsDraw",
             label: {
               display: true,
-              content: "Hired Q3 2025",
-              position: "start",
+              content: "Quarter Hired",
+              position: "end",
               backgroundColor: "#ef4444",
               color: "#fff",
-              font: { size: 11, weight: "bold", family: poppins },
-              padding: { x: 6, y: 4 },
+              font: { size: 13, weight: "bold", family: poppins },
+              padding: 5,
               yAdjust: 8,
             },
           },
@@ -404,11 +404,6 @@ class WebsiteManager {
       wrapper.appendChild(header);
     }
 
-    // Stat cards
-    if (Array.isArray(group.stats) && group.stats.length) {
-      wrapper.appendChild(this.#createStatsRow(group.stats));
-    }
-
     // Charts grid
     const grid = document.createElement("div");
     grid.className = "charts-grid";
@@ -445,6 +440,12 @@ class WebsiteManager {
     });
 
     wrapper.appendChild(grid);
+
+    // Stat cards — rendered below the charts
+    if (Array.isArray(group.stats) && group.stats.length) {
+      wrapper.appendChild(this.#createStatsRow(group.stats));
+    }
+
     return wrapper;
   }
 
